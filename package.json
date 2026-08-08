@@ -1,0 +1,26 @@
+{
+  "name": "memoria",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev:web": "bun run --cwd web dev",
+    "dev:server": "bun run --cwd server dev",
+    "build:web": "bun run --cwd web build",
+    "seed:server": "bun run --cwd server src/seed/seed.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "workspaces": [
+    "web",
+    "server",
+    "shared"
+  ],
+  "overrides": {
+    "elysia": "1.4.29"
+  }
+}
