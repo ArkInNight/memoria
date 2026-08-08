@@ -1,13 +1,30 @@
 import { useMemo, useState } from "react";
-import type { Profile, Rarity } from "@memoria/shared";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import type { Profile, Rarity } from "@/lib/shared";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectLabel, SelectGroup, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectGroup,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { PlusCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { CHARACTERS, getAggregatedBanners } from "@/lib/domain/assets";
+import { YStack } from "@/components/layout/stack";
+import { Grid } from "@/components/layout/grid";
 import { addManualPull } from "./manualPull";
 
 const CUSTOM = "__custom__";
@@ -123,8 +140,8 @@ export function ManualSummonDialog(props: {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
-          <div className="space-y-2">
+        <YStack gap={16}>
+          <YStack gap={8}>
             <Label>Banner</Label>
             <Select value={banner} onValueChange={setBanner}>
               <SelectTrigger className="w-full">
@@ -147,9 +164,9 @@ export function ManualSummonDialog(props: {
                 onChange={(e) => setCustomBanner(e.target.value)}
               />
             )}
-          </div>
+          </YStack>
 
-          <div className="space-y-2">
+          <YStack gap={8}>
             <Label>Karakter</Label>
             <Select value={character} onValueChange={setCharacter}>
               <SelectTrigger className="w-full">
@@ -171,13 +188,16 @@ export function ManualSummonDialog(props: {
               </SelectContent>
             </Select>
             {character === CUSTOM && (
-              <div className="grid gap-2">
+              <Grid gap={8}>
                 <Input
                   placeholder="Nama karakter custom"
                   value={customCharacter}
                   onChange={(e) => setCustomCharacter(e.target.value)}
                 />
-                <Select value={customRarity} onValueChange={(v) => setCustomRarity(v as RarityOption)}>
+                <Select
+                  value={customRarity}
+                  onValueChange={(v) => setCustomRarity(v as RarityOption)}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Rarity" />
                   </SelectTrigger>
@@ -189,12 +209,12 @@ export function ManualSummonDialog(props: {
                     <SelectItem value="2">2★</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </Grid>
             )}
-          </div>
+          </YStack>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
+          <Grid cols={2} gap={16}>
+            <YStack gap={8}>
               <Label>Jenis Tarikan</Label>
               <Select value={summonType} onValueChange={(v) => setSummonType(v as "1" | "10")}>
                 <SelectTrigger className="w-full">
@@ -205,12 +225,16 @@ export function ManualSummonDialog(props: {
                   <SelectItem value="10">10-pull</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-            <div className="space-y-2">
+            </YStack>
+            <YStack gap={8}>
               <Label>Waktu</Label>
-              <Input type="datetime-local" value={createTime} onChange={(e) => setCreateTime(e.target.value)} />
-            </div>
-          </div>
+              <Input
+                type="datetime-local"
+                value={createTime}
+                onChange={(e) => setCreateTime(e.target.value)}
+              />
+            </YStack>
+          </Grid>
 
           <Button className="w-full" onClick={handleSubmit} disabled={isPending}>
             {isPending ? (
@@ -220,7 +244,7 @@ export function ManualSummonDialog(props: {
             )}
             Tambah Record
           </Button>
-        </div>
+        </YStack>
       </DialogContent>
     </Dialog>
   );

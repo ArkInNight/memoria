@@ -2,7 +2,7 @@
 """Validate the per-edition banner catalog (assets/banners.json).
 
 Checks:
-  - schema / types against shared/src/types.ts
+  - schema / types against src/lib/shared/types.ts
   - invariants (unique name+version, start <= end, uniform timestamps)
   - banner-rules.json coverage for every BannerType
   - optional mechanic overrides conform to allowed values
@@ -22,7 +22,7 @@ TYPES = {
     "lake-promise", "lake-revelation", "lake-gift", "lake-invitation",
     "lake-vow", "snow", "yearning", "beginner", "standard",
 }
-# PityPool from shared/src/types.ts: debut/rerun share the 'character' pool.
+# PityPool from src/lib/shared/types.ts: debut/rerun share the 'character' pool.
 PITY_POOLS = (TYPES - {"debut", "rerun"}) | {"character"}
 RATE_UP_RULES = {"5050", "7030", "100-first", "100", "none", "box"}
 TS = re.compile(r"^\d{4}-\d{2}-\d{2} 05:00:00$|^\d{4}-\d{2}-\d{2} 04:59:00$")

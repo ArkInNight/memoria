@@ -184,7 +184,7 @@ _(See in-game data for each version.)_
 
 The app encodes this document in `assets/banners.json` (one record per banner
 edition/run) + `assets/banner-rules.json` (mechanics defaults per `type`).
-See `shared/src/types.ts` (`BannerType`, `PityPool`, `RateUpRule`) and
+See `src/lib/shared/types.ts` (`BannerType`, `PityPool`, `RateUpRule`) and
 `tools/README.md` (Banner data model) for the full picture.
 
 | Docs term (above)                    | `BannerType`        | Pity pool (resets)                       | Rate-up rule | Extra rules |

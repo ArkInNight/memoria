@@ -107,7 +107,7 @@ One record per **banner edition** (a single run of a banner, keyed by
 - `assets/characters.json` — canonical English character names (rate-up names
   are normalized against it; e.g. `Ezio` -> `Ezio Auditore`).
 
-Record fields (see `Banner` in `shared/src/types.ts`):
+Record fields (see `Banner` in `src/lib/shared/types.ts`):
 
 - `name`, `nameCN`, `type`, `version`, `startDate`/`endDate`
   (uniform `05:00:00` / `04:59:00`, or `null` for permanent banners),

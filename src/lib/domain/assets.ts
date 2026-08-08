@@ -1,5 +1,5 @@
-import type { Character, Banner, BannerRuleMap } from "@memoria/shared";
-import { slugify } from "@memoria/shared";
+import type { Character, Banner, BannerRuleMap } from "@/lib/shared";
+import { slugify } from "@/lib/shared";
 import bannersJson from "../../../assets/banners.json";
 import charactersJson from "../../../assets/characters.json";
 import bannerRulesJson from "../../../assets/banner-rules.json";

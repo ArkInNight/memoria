@@ -1,4 +1,4 @@
-import type { PullRecord, Banner, BannerRule, BannerRuleMap } from "@memoria/shared";
+import type { PullRecord, Banner, BannerRule, BannerRuleMap } from "@/lib/shared";
 import { BANNERS } from "./assets";
 
 export const DEFAULT_BANNER_RULE: Required<Pick<BannerRule, "pityPool" | "carryOver" | "rateUp">> = {

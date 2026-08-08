@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import type { PullRecord } from "@memoria/shared";
+import type { PullRecord } from "@/lib/shared";
 import { db, type StoredSummon } from "./db";
 
 export function useSummons(profileId: string | null | undefined): StoredSummon[] {

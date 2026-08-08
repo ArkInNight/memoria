@@ -1,5 +1,5 @@
 import Dexie, { type Table } from "dexie";
-import type { PullRecord, ImportSession, Profile } from "@memoria/shared";
+import type { PullRecord, ImportSession, Profile } from "@/lib/shared";
 
 /** A summon scoped to a profile (composite PK [profileId+id]). */
 export interface StoredSummon extends PullRecord {

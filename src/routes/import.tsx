@@ -1,9 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/import")({
-  component: ImportLayout,
+  component: Outlet,
 });
-
-function ImportLayout() {
-  return <Outlet />;
-}

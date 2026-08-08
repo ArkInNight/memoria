@@ -1,4 +1,4 @@
-import type { PullRecord, Character, Banner } from "@memoria/shared";
+import type { PullRecord, Character, Banner } from "@/lib/shared";
 import { CHARACTERS, BANNERS } from "./assets";
 
 export interface RawPull {

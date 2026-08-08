@@ -1,4 +1,4 @@
-import type { ImportResult, PullRecord, Rarity } from "@memoria/shared";
+import type { ImportResult, PullRecord, Rarity } from "@/lib/shared";
 import { db, type StoredSession, type StoredSummon } from "@/lib/store/db";
 import { getSummons } from "@/lib/store/summons";
 import { BANNERS, BANNER_RULES, CHARACTERS } from "@/lib/domain/assets";

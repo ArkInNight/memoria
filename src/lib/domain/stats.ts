@@ -1,4 +1,4 @@
-import type { PullRecord, ImportSession, DashboardStats, BannerStats, Banner } from "@memoria/shared";
+import type { PullRecord, ImportSession, DashboardStats, BannerStats, Banner } from "@/lib/shared";
 import { BANNERS, BANNER_RULES } from "./assets";
 import { pityGroupFor } from "./pityEngine";
 

@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import type { Profile } from "@memoria/shared";
+import type { Profile } from "@/lib/shared";
 import { db } from "./db";
 import { getActiveProfileId, setActiveProfileId, clearActiveProfileId } from "./activeProfile";
 

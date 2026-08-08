@@ -1,4 +1,4 @@
-import type { Profile, PullRecord, ImportSession } from "@memoria/shared";
+import type { Profile, PullRecord, ImportSession } from "@/lib/shared";
 import { db, type StoredSession, type StoredSummon } from "./db";
 
 export interface BackupFile {
