@@ -6,12 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Search, ChevronLeft, ChevronRight, UserPlus } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, UserPlus, PlusCircle } from "lucide-react";
 import type { PullRecord } from "@memoria/shared";
 import { EntityImage } from "@/components/ui/entity-image";
 import { CHARACTERS, getAggregatedBanners } from "@/lib/domain/assets";
 import { useActiveProfile } from "@/lib/store/profiles";
 import { usePullRecords } from "@/lib/store/summons";
+import { ManualSummonDialog } from "@/components/manual-summon-dialog";
 
 export const Route = createFileRoute("/history")({
   component: HistoryPage,
@@ -56,6 +57,7 @@ function HistoryPage() {
   const [bannerFilter, setBannerFilter] = useState("all");
   const [rarityFilter, setRarityFilter] = useState("all");
   const [page, setPage] = useState(1);
+  const [manualOpen, setManualOpen] = useState(false);
   const limit = 20;
 
   const banners = useMemo(() => getAggregatedBanners(), []);
@@ -116,10 +118,18 @@ function HistoryPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Summon History</h2>
-        <p className="text-muted-foreground mt-1">Search, sort, and analyze your permanent gacha logs.</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Summon History</h2>
+          <p className="text-muted-foreground mt-1">Search, sort, and analyze your permanent gacha logs.</p>
+        </div>
+        <Button onClick={() => setManualOpen(true)}>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Tambah Manual
+        </Button>
       </div>
+
+      <ManualSummonDialog profile={profile} open={manualOpen} onOpenChange={setManualOpen} />
 
       {/* Filters Card */}
       <Card className="p-4 shadow-sm">
