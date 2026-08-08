@@ -1,71 +1,73 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { server } from "@/api/client";
+import { useMemo } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Sparkles, Star, Trophy } from "lucide-react";
-import type { BannerStats, Character } from "@memoria/shared";
+import { ArrowLeft, Sparkles, Star, Trophy, UserPlus } from "lucide-react";
+import { slugify } from "@memoria/shared";
 import { EntityImage } from "@/components/ui/entity-image";
+import { CHARACTERS, getAggregatedBanners } from "@/lib/domain/assets";
+import { computeBannerStats } from "@/lib/domain/stats";
+import { useActiveProfile } from "@/lib/store/profiles";
+import { usePullRecords } from "@/lib/store/summons";
 
 export const Route = createFileRoute("/banners/$bannerId")({
   component: BannerDetailPage,
 });
 
+const getBannerTypeColor = (type: string) => {
+  switch (type) {
+    case "debut":
+      return "bg-amber-600 text-white";
+    case "rerun":
+      return "bg-purple-600 text-white";
+    case "exclusive":
+      return "bg-orange-600 text-white";
+    case "collaboration":
+      return "bg-red-600 text-white";
+    case "ripples":
+      return "bg-cyan-600 text-white";
+    case "lake-promise":
+    case "lake-revelation":
+    case "lake-gift":
+    case "lake-invitation":
+    case "lake-vow":
+    case "snow":
+    case "yearning":
+      return "bg-emerald-600 text-white";
+    case "beginner":
+      return "bg-teal-600 text-white";
+    case "standard":
+      return "bg-gray-600 text-white";
+    default:
+      return "bg-blue-600 text-white";
+  }
+};
+
 function BannerDetailPage() {
   const { bannerId } = Route.useParams();
 
-  const { data: characters } = useQuery<Character[]>({
-    queryKey: ["characters-all"],
-    queryFn: async () => {
-      const res = await server.api.characters.get();
-      if (res.error) throw new Error(res.error.value as string);
-      return res.data as Character[];
-    },
-  });
+  const profile = useActiveProfile();
+  const pulls = usePullRecords(profile?.id);
+
+  const banner = useMemo(
+    () => getAggregatedBanners().find((b) => slugify(b.name) === bannerId),
+    [bannerId]
+  );
+
+  const bannerPulls = useMemo(
+    () => (banner ? pulls.filter((p) => p.poolName === banner.name) : []),
+    [pulls, banner]
+  );
+
+  const stats = useMemo(
+    () => (banner ? computeBannerStats(banner, bannerPulls) : null),
+    [banner, bannerPulls]
+  );
 
   const getCharImage = (name: string) =>
-    characters?.find((c) => c.name === name)?.imageUrl;
-
-  const { data: stats, isLoading, error } = useQuery<BannerStats>({
-    queryKey: ["banner-stats", bannerId],
-    queryFn: async () => {
-      const res = await server.api.banners[bannerId].get();
-      if (res.error) throw new Error(res.error.value as string);
-      return res.data as BannerStats;
-    },
-  });
-
-  const getBannerTypeColor = (type: string) => {
-    switch (type) {
-      case "debut":
-        return "bg-amber-600 text-white";
-      case "rerun":
-        return "bg-purple-600 text-white";
-      case "exclusive":
-        return "bg-orange-600 text-white";
-      case "collaboration":
-        return "bg-red-600 text-white";
-      case "ripples":
-        return "bg-cyan-600 text-white";
-      case "lake-promise":
-      case "lake-revelation":
-      case "lake-gift":
-      case "lake-invitation":
-      case "lake-vow":
-      case "snow":
-      case "yearning":
-        return "bg-emerald-600 text-white";
-      case "beginner":
-        return "bg-teal-600 text-white";
-      case "standard":
-        return "bg-gray-600 text-white";
-      default:
-        return "bg-blue-600 text-white";
-    }
-  };
+    CHARACTERS.find((c) => c.name === name)?.imageUrl;
 
   return (
     <div className="space-y-6">
@@ -78,47 +80,46 @@ function BannerDetailPage() {
           </Link>
         </Button>
 
-        {isLoading ? (
-          <div className="space-y-2">
-            <Skeleton className="h-10 w-48" />
-            <Skeleton className="h-4 w-32" />
-          </div>
-        ) : stats ? (
+        {banner ? (
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-3xl font-bold tracking-tight">{stats.name}</h2>
-              <Badge className={`${getBannerTypeColor(stats.type)} text-xs capitalize`}>
-                {(stats.type ?? "other").replace("-", " ")}
+              <h2 className="text-3xl font-bold tracking-tight">{banner.name}</h2>
+              <Badge className={`${getBannerTypeColor(banner.type)} text-xs capitalize`}>
+                {(banner.type ?? "other").replace("-", " ")}
               </Badge>
             </div>
             <p className="text-muted-foreground mt-1">Detailed statistics and pull details.</p>
           </div>
-        ) : null}
+        ) : (
+          <h2 className="text-3xl font-bold tracking-tight">Banner not found</h2>
+        )}
       </div>
 
-      {isLoading ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i}>
-              <CardHeader className="space-y-0 pb-2">
-                <Skeleton className="h-4 w-24" />
-              </CardHeader>
-              <CardContent>
-                <Skeleton className="h-8 w-16" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : error ? (
-        <Card className="p-12 text-center text-destructive">
-          Error loading banner stats: {error.message}
+      {!banner ? (
+        <Card className="p-12 text-center text-destructive">Banner not found.</Card>
+      ) : !profile ? (
+        <Card className="p-12 text-center space-y-4">
+          <div className="mx-auto w-14 h-14 rounded-full bg-muted flex items-center justify-center">
+            <UserPlus className="h-7 w-7 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">Belum ada profile</h3>
+            <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
+              Statistik banner dihitung dari data summon profile kamu. Buat profile dulu untuk
+              melihat data pull di banner ini.
+            </p>
+          </div>
+          <Button asChild>
+            <Link to="/profiles">Buat Profile</Link>
+          </Button>
         </Card>
       ) : stats ? (
         <div className="space-y-8">
           {/* Banner Image */}
           <EntityImage
             variant="banner"
-            name={stats.name}
+            name={banner.name}
+            imageUrl={banner.imageUrl ?? undefined}
             className="aspect-[16/5] w-full rounded-2xl"
           />
 
@@ -234,20 +235,20 @@ function BannerDetailPage() {
                   <div className="max-h-[400px] overflow-y-auto">
                     <Table>
                       <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-10"></TableHead>
-                        <TableHead>Character</TableHead>
-                        <TableHead className="text-center">Pity</TableHead>
-                        <TableHead>Time</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {stats.obtained5Star.map((p, i) => (
-                        <TableRow key={i}>
-                          <TableCell>
-                            <EntityImage name={p.name} imageUrl={getCharImage(p.name)} rarity={5} className="h-9 w-9 rounded-full" />
-                          </TableCell>
-                          <TableCell className="font-semibold text-purple-500">{p.name}</TableCell>
+                        <TableRow>
+                          <TableHead className="w-10"></TableHead>
+                          <TableHead>Character</TableHead>
+                          <TableHead className="text-center">Pity</TableHead>
+                          <TableHead>Time</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {stats.obtained5Star.map((p, i) => (
+                          <TableRow key={i}>
+                            <TableCell>
+                              <EntityImage name={p.name} imageUrl={getCharImage(p.name)} rarity={5} className="h-9 w-9 rounded-full" />
+                            </TableCell>
+                            <TableCell className="font-semibold text-purple-500">{p.name}</TableCell>
                             <TableCell className="text-center font-mono font-bold">{p.pity}</TableCell>
                             <TableCell className="text-muted-foreground text-xs whitespace-nowrap">
                               {p.createTime.split(".")[0]}

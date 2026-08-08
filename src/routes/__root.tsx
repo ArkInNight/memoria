@@ -1,15 +1,25 @@
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, History, Archive, Upload, ScrollText, Moon, Sun, Flame } from "lucide-react";
+import { LayoutDashboard, History, Archive, Upload, ScrollText, Moon, Sun, Flame, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useActiveProfile, useProfiles, setActive } from "@/lib/store/profiles";
 
 export const Route = createRootRoute({
   component: RootLayout,
 });
 
 function RootLayout() {
+  const profiles = useProfiles();
+  const activeProfile = useActiveProfile();
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark" || 
+    return localStorage.getItem("theme") === "dark" ||
       (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches);
   });
 
@@ -37,6 +47,25 @@ function RootLayout() {
           >
             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
+        </div>
+
+        {/* Profile switcher */}
+        <div className="px-4 pt-4">
+          <Select
+            value={activeProfile?.id ?? ""}
+            onValueChange={(value) => void setActive(value)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Pilih profile" />
+            </SelectTrigger>
+            <SelectContent>
+              {profiles.map((profile) => (
+                <SelectItem key={profile.id} value={profile.id}>
+                  {profile.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Navigation */}
@@ -94,11 +123,20 @@ function RootLayout() {
             <ScrollText size={18} />
             <span>Import Log</span>
           </Link>
+
+          <Link
+            to="/profiles"
+            activeProps={{ className: "bg-accent text-accent-foreground" }}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium hover:bg-accent/50 transition"
+          >
+            <Users size={18} />
+            <span>Profiles</span>
+          </Link>
         </nav>
 
         {/* Footer */}
         <div className="p-4 border-t border-border text-xs text-muted-foreground text-center">
-          Memoria v0.1 • Reverse: 1999
+          Memoria v0.2 • Reverse: 1999
         </div>
       </aside>
 

@@ -1,114 +1,118 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { server } from "@/api/client";
-import { useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
-import type { PullRecord, Banner, Character } from "@memoria/shared";
+import { Search, ChevronLeft, ChevronRight, UserPlus } from "lucide-react";
+import type { PullRecord } from "@memoria/shared";
 import { EntityImage } from "@/components/ui/entity-image";
+import { CHARACTERS, getAggregatedBanners } from "@/lib/domain/assets";
+import { useActiveProfile } from "@/lib/store/profiles";
+import { usePullRecords } from "@/lib/store/summons";
 
 export const Route = createFileRoute("/history")({
   component: HistoryPage,
 });
 
+const getRarityBadge = (rarity: number) => {
+  switch (rarity) {
+    case 6:
+      return <Badge className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold">6★</Badge>;
+    case 5:
+      return <Badge className="bg-purple-600 hover:bg-purple-700 text-white font-semibold">5★</Badge>;
+    case 4:
+      return <Badge variant="secondary" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold">4★</Badge>;
+    default:
+      return <Badge variant="outline">{rarity}★</Badge>;
+  }
+};
+
+const getRateOnBadge = (rateOn: boolean | null) => {
+  if (rateOn === true) {
+    return <Badge className="bg-emerald-600 text-white text-xs">Rate ON</Badge>;
+  }
+  if (rateOn === false) {
+    return <Badge variant="destructive" className="text-xs">Rate OFF</Badge>;
+  }
+  return <span className="text-muted-foreground">-</span>;
+};
+
+const getGuaranteeBadge = (guaranteed: boolean | null, rarity: number) => {
+  if (rarity !== 6) return <span className="text-muted-foreground">-</span>;
+  if (guaranteed === true) {
+    return <Badge className="bg-cyan-600 text-white text-xs">Guaranteed</Badge>;
+  }
+  return <Badge variant="outline" className="text-xs">50/50</Badge>;
+};
+
 function HistoryPage() {
+  const profile = useActiveProfile();
+  const allPulls = usePullRecords(profile?.id);
+
   const [search, setSearch] = useState("");
   const [bannerFilter, setBannerFilter] = useState("all");
   const [rarityFilter, setRarityFilter] = useState("all");
   const [page, setPage] = useState(1);
   const limit = 20;
 
-  // Fetch banners for the filter dropdown
-  const { data: banners } = useQuery<Banner[]>({
-    queryKey: ["banners-list"],
-    queryFn: async () => {
-      const res = await server.api.banners.get();
-      if (res.error) throw new Error(res.error.value as string);
-      return res.data as Banner[];
-    },
-  });
-
-  // Fetch characters to resolve pull images by name
-  const { data: characters } = useQuery<Character[]>({
-    queryKey: ["characters-all"],
-    queryFn: async () => {
-      const res = await server.api.characters.get();
-      if (res.error) throw new Error(res.error.value as string);
-      return res.data as Character[];
-    },
-  });
-
-  const charImageByName = new Map(
-    (characters ?? []).map((c) => [c.name, c.imageUrl])
+  const banners = useMemo(() => getAggregatedBanners(), []);
+  const charImageByName = useMemo(
+    () => new Map(CHARACTERS.map((c) => [c.name, c.imageUrl])),
+    []
   );
 
-  // Fetch summons
-  const { data: result, isLoading } = useQuery<{
-    data: PullRecord[];
-    total: number;
-    page: number;
-    limit: number;
-  }>({
-    queryKey: ["summons", page, search, bannerFilter, rarityFilter],
-    queryFn: async () => {
-      const queryParams: Record<string, string> = {
-        page: page.toString(),
-        limit: limit.toString(),
-      };
-      if (search) queryParams.search = search;
-      if (bannerFilter && bannerFilter !== "all") queryParams.banner = bannerFilter;
-      if (rarityFilter && rarityFilter !== "all") queryParams.rarity = rarityFilter;
+  const filtered = useMemo(() => {
+    let rows = [...allPulls];
+    if (search) {
+      const q = search.toLowerCase();
+      rows = rows.filter((p) => p.name.toLowerCase().includes(q));
+    }
+    if (bannerFilter !== "all") {
+      rows = rows.filter((p) => p.poolName === bannerFilter);
+    }
+    if (rarityFilter !== "all") {
+      rows = rows.filter((p) => p.rarity === parseInt(rarityFilter));
+    }
+    rows.sort((a, b) => b.createTime.localeCompare(a.createTime));
+    return rows;
+  }, [allPulls, search, bannerFilter, rarityFilter]);
 
-      const res = await server.api.summons.get({ query: queryParams });
-      if (res.error) throw new Error(res.error.value.message);
-      return res.data;
-    },
-  });
-
-  const totalPages = result ? Math.ceil(result.total / limit) : 0;
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  const safePage = Math.min(page, totalPages);
+  const pageData: PullRecord[] = filtered.slice((safePage - 1) * limit, safePage * limit);
 
   const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setPage(newPage);
-    }
+    if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
   };
 
-  const getRarityBadge = (rarity: number) => {
-    switch (rarity) {
-      case 6:
-        return <Badge className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold">6★</Badge>;
-      case 5:
-        return <Badge className="bg-purple-600 hover:bg-purple-700 text-white font-semibold">5★</Badge>;
-      case 4:
-        return <Badge variant="secondary" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold">4★</Badge>;
-      default:
-        return <Badge variant="outline">{rarity}★</Badge>;
-    }
-  };
-
-  const getRateOnBadge = (rateOn: boolean | null) => {
-    if (rateOn === true) {
-      return <Badge className="bg-emerald-600 text-white text-xs">Rate ON</Badge>;
-    }
-    if (rateOn === false) {
-      return <Badge variant="destructive" className="text-xs">Rate OFF</Badge>;
-    }
-    return <span className="text-muted-foreground">-</span>;
-  };
-
-  const getGuaranteeBadge = (guaranteed: boolean | null, rarity: number) => {
-    if (rarity !== 6) return <span className="text-muted-foreground">-</span>;
-    if (guaranteed === true) {
-      return <Badge className="bg-cyan-600 text-white text-xs">Guaranteed</Badge>;
-    }
-    return <Badge variant="outline" className="text-xs">50/50</Badge>;
-  };
+  if (!profile) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Summon History</h2>
+          <p className="text-muted-foreground mt-1">Search, sort, and analyze your permanent gacha logs.</p>
+        </div>
+        <Card className="p-12 text-center space-y-4">
+          <div className="mx-auto w-14 h-14 rounded-full bg-muted flex items-center justify-center">
+            <UserPlus className="h-7 w-7 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold">Belum ada profile</h3>
+            <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
+              Riwayat summon disimpan per profile. Buat profile dulu untuk melihat data.
+            </p>
+          </div>
+          <Button asChild>
+            <Link to="/profiles">Buat Profile</Link>
+          </Button>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -146,7 +150,7 @@ function HistoryPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Banners</SelectItem>
-                {banners?.map((b) => (
+                {banners.map((b) => (
                   <SelectItem key={b.name} value={b.name}>
                     {b.name} {b.version ? `(${b.version})` : ""}
                   </SelectItem>
@@ -177,20 +181,14 @@ function HistoryPage() {
           </div>
 
           <div className="flex items-center justify-end text-sm text-muted-foreground font-medium">
-            {result ? `${result.total} records found` : "Loading..."}
+            {`${total} records found`}
           </div>
         </div>
       </Card>
 
       {/* Summons Table */}
       <Card className="shadow-sm overflow-hidden">
-        {isLoading ? (
-          <div className="p-8 space-y-4">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-20 w-full" />
-          </div>
-        ) : result && result.data.length > 0 ? (
+        {pageData.length > 0 ? (
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
@@ -206,8 +204,8 @@ function HistoryPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {result.data.map((pull) => (
-                  <TableRow key={pull.id}>
+                {pageData.map((pull) => (
+                  <TableRow key={`${profile.id}-${pull.id}`}>
                     <TableCell className="font-mono text-xs text-muted-foreground whitespace-nowrap">
                       {pull.createTime.split(".")[0]}
                     </TableCell>
@@ -242,14 +240,14 @@ function HistoryPage() {
             {totalPages > 1 && (
               <div className="flex items-center justify-between p-4 border-t border-border bg-card">
                 <div className="text-xs text-muted-foreground">
-                  Page {page} of {totalPages}
+                  Page {safePage} of {totalPages}
                 </div>
                 <div className="flex items-center gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handlePageChange(page - 1)}
-                    disabled={page === 1}
+                    onClick={() => handlePageChange(safePage - 1)}
+                    disabled={safePage === 1}
                   >
                     <ChevronLeft size={16} />
                     Previous
@@ -257,8 +255,8 @@ function HistoryPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handlePageChange(page + 1)}
-                    disabled={page === totalPages}
+                    onClick={() => handlePageChange(safePage + 1)}
+                    disabled={safePage === totalPages}
                   >
                     Next
                     <ChevronRight size={16} />
@@ -269,7 +267,9 @@ function HistoryPage() {
           </div>
         ) : (
           <div className="p-12 text-center text-muted-foreground">
-            No summon records matching criteria.
+            {allPulls.length === 0
+              ? "Belum ada data summon di profile ini. Import dulu dari halaman Import."
+              : "No summon records matching criteria."}
           </div>
         )}
       </Card>

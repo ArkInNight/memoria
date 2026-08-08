@@ -1,57 +1,49 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { server } from "@/api/client";
+import { useMemo } from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar, ArrowRight, Layers } from "lucide-react";
 import type { Banner } from "@memoria/shared";
 import { slugify } from "@memoria/shared";
 import { EntityImage } from "@/components/ui/entity-image";
+import { getAggregatedBanners } from "@/lib/domain/assets";
 
 export const Route = createFileRoute("/banners/")({
   component: BannersIndexPage,
 });
 
-function BannersIndexPage() {
-  const { data: banners, isLoading } = useQuery<Banner[]>({
-    queryKey: ["banners-archive"],
-    queryFn: async () => {
-      const res = await server.api.banners.get();
-      if (res.error) throw new Error(res.error.value as string);
-      return res.data as Banner[];
-    },
-  });
+const getBannerTypeColor = (type: string) => {
+  switch (type) {
+    case "debut":
+      return "bg-amber-600 text-white";
+    case "rerun":
+      return "bg-purple-600 text-white";
+    case "exclusive":
+      return "bg-orange-600 text-white";
+    case "collaboration":
+      return "bg-red-600 text-white";
+    case "ripples":
+      return "bg-cyan-600 text-white";
+    case "lake-promise":
+    case "lake-revelation":
+    case "lake-gift":
+    case "lake-invitation":
+    case "lake-vow":
+    case "snow":
+    case "yearning":
+      return "bg-emerald-600 text-white";
+    case "beginner":
+      return "bg-teal-600 text-white";
+    case "standard":
+      return "bg-gray-600 text-white";
+    default:
+      return "bg-blue-600 text-white";
+  }
+};
 
-  const getBannerTypeColor = (type: string) => {
-    switch (type) {
-      case "debut":
-        return "bg-amber-600 text-white";
-      case "rerun":
-        return "bg-purple-600 text-white";
-      case "exclusive":
-        return "bg-orange-600 text-white";
-      case "collaboration":
-        return "bg-red-600 text-white";
-      case "ripples":
-        return "bg-cyan-600 text-white";
-      case "lake-promise":
-      case "lake-revelation":
-      case "lake-gift":
-      case "lake-invitation":
-      case "lake-vow":
-      case "snow":
-      case "yearning":
-        return "bg-emerald-600 text-white";
-      case "beginner":
-        return "bg-teal-600 text-white";
-      case "standard":
-        return "bg-gray-600 text-white";
-      default:
-        return "bg-blue-600 text-white";
-    }
-  };
+function BannersIndexPage() {
+  const banners: Banner[] = useMemo(() => getAggregatedBanners(), []);
 
   return (
     <div className="space-y-6">
@@ -69,22 +61,7 @@ function BannersIndexPage() {
         </Button>
       </div>
 
-      {isLoading ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i}>
-              <CardHeader className="space-y-2">
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-6 w-40" />
-              </CardHeader>
-              <CardContent>
-                <Skeleton className="h-4 w-48 mb-2" />
-                <Skeleton className="h-8 w-full mt-4" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : banners && banners.length > 0 ? (
+      {banners.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {banners.map((banner) => (
             <Card key={banner.name} className="flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-md transition">

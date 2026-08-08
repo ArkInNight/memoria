@@ -113,6 +113,14 @@ export interface ImportSession {
   failedCount: number;
 }
 
+/** A game account owned by the current browser user. Data is isolated per profile. */
+export interface Profile {
+  id: string;
+  name: string;
+  note?: string;
+  createdAt: string;
+}
+
 export interface DashboardStats {
   totalSummons: number;
   currentPity: number;
