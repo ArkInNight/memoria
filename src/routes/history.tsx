@@ -12,7 +12,7 @@ import { EntityImage } from "@/components/ui/entity-image";
 import { CHARACTERS, getAggregatedBanners } from "@/lib/domain/assets";
 import { useActiveProfile } from "@/lib/store/profiles";
 import { usePullRecords } from "@/lib/store/summons";
-import { ManualSummonDialog } from "@/components/manual-summon-dialog";
+import { ManualSummonDialog } from "@/features/history/manual-summon-dialog";
 
 export const Route = createFileRoute("/history")({
   component: HistoryPage,

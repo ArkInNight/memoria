@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectLabel, SelectGroup, SelectSepa
 import { PlusCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { CHARACTERS, getAggregatedBanners } from "@/lib/domain/assets";
-import { addManualPull } from "@/lib/domain/manualPull";
+import { addManualPull } from "./manualPull";
 
 const CUSTOM = "__custom__";
 
