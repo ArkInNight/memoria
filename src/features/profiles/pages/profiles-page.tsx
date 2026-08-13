@@ -21,7 +21,6 @@ import {
   restoreProfile,
 } from "@/lib/store/profiles";
 import { exportAll, exportProfile, downloadJson, importBackup } from "@/lib/store/exportImport";
-import { createDemoProfile } from "@/lib/domain/demoProfile";
 import { ProfileCard } from "../components/profile-card";
 import { ProfileActionsBar } from "../components/profile-actions-bar";
 import { CreateProfileDialog } from "../components/create-profile-dialog";
@@ -37,7 +36,7 @@ export function ProfilesPage() {
   const [createEpoch, setCreateEpoch] = useState(0);
   const [editing, setEditing] = useState<ProfileEditState | null>(null);
   const [archiving, setArchiving] = useState<{ id: string; name: string } | null>(null);
-  const [pendingAction, setPendingAction] = useState<"demo" | "import" | "export" | null>(null);
+  const [pendingAction, setPendingAction] = useState<"import" | "export" | null>(null);
 
   const handleCreate = async (name: string, note: string): Promise<boolean> => {
     if (!name.trim()) {
@@ -138,22 +137,6 @@ export function ProfilesPage() {
     }
   };
 
-  const handleCreateDemo = async () => {
-    setPendingAction("demo");
-    try {
-      const { importedCount } = await createDemoProfile();
-      toast.success("Demo profile created", {
-        description: `${importedCount} sample pulls imported.`,
-      });
-    } catch (err) {
-      toast.error("Failed to create demo profile", {
-        description: err instanceof Error ? err.message : "Something went wrong.",
-      });
-    } finally {
-      setPendingAction(null);
-    }
-  };
-
   return (
     <YStack gap={24}>
       <PageHeader
@@ -168,7 +151,6 @@ export function ProfilesPage() {
           setCreateEpoch((e) => e + 1);
           setCreateOpen(true);
         }}
-        onCreateDemo={() => void handleCreateDemo()}
         onImportFile={handleImportFile}
         onExportAll={() => void handleExportAll()}
       />

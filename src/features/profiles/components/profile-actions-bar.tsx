@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { UserPlus, Download, Upload, Database } from "lucide-react";
+import { UserPlus, Download, Upload } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,11 @@ import { XStack, Spacer } from "@/components/layout/stack";
 function ProfileActionsBar({
   pendingAction,
   onCreateOpen,
-  onCreateDemo,
   onImportFile,
   onExportAll,
 }: {
-  pendingAction: "demo" | "import" | "export" | null;
+  pendingAction: "import" | "export" | null;
   onCreateOpen: () => void;
-  onCreateDemo: () => void;
   onImportFile: (file: File) => Promise<void>;
   onExportAll: () => void;
 }) {
@@ -28,15 +26,6 @@ function ProfileActionsBar({
         <Button onClick={onCreateOpen}>
           <UserPlus data-icon="inline-start" />
           Create Profile
-        </Button>
-
-        <Button variant="outline" onClick={onCreateDemo} disabled={pendingAction !== null}>
-          {pendingAction === "demo" ? (
-            <Spinner data-icon="inline-start" />
-          ) : (
-            <Database data-icon="inline-start" />
-          )}
-          Create Demo Profile
         </Button>
 
         <Spacer />

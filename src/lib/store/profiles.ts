@@ -72,14 +72,3 @@ export async function archiveProfile(id: string): Promise<void> {
 export async function restoreProfile(id: string): Promise<void> {
   await db.profiles.update(id, { archivedAt: undefined });
 }
-
-/** Roll back a profile that failed before its initial import completed. */
-export async function discardIncompleteProfile(id: string, previousActiveId: string | null) {
-  await db.transaction("rw", [db.profiles, db.sessions, db.summons, db.settings], async () => {
-    await db.summons.where("profileId").equals(id).delete();
-    await db.sessions.where("profileId").equals(id).delete();
-    await db.profiles.delete(id);
-    if (previousActiveId) await setActiveProfileId(previousActiveId);
-    else await clearActiveProfileId();
-  });
-}
