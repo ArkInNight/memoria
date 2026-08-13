@@ -54,7 +54,7 @@ async function validateTarget(value: string, base?: URL): Promise<URL> {
     throw new Error("This URL host is not allowed");
   }
 
-  let addresses: Awaited<ReturnType<typeof lookup>>;
+  let addresses: Array<{ address: string; family: number }>;
   try {
     addresses = await lookup(target.hostname, { all: true });
   } catch {
@@ -98,7 +98,7 @@ export async function handler(req: Request): Promise<Response> {
 
   let body: { url?: string };
   try {
-    body = await req.json();
+    body = (await req.json()) as { url?: string };
   } catch {
     return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
