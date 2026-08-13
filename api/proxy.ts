@@ -1,33 +1,94 @@
 import { lookup } from "node:dns/promises";
+import { isIP } from "node:net";
 
 const MAX_BODY = 1024 * 10;
+const MAX_REDIRECTS = 3;
+const REQUEST_TIMEOUT_MS = 8000;
+const DEFAULT_ALLOWED_HOSTS = ["reverse1999-game-api.com"];
 
-const BLOCKED_IP_PREFIXES = [
-  "10.",
-  "127.",
-  "172.16.",
-  "172.17.",
-  "172.18.",
-  "172.19.",
-  "172.20.",
-  "172.21.",
-  "172.22.",
-  "172.23.",
-  "172.24.",
-  "172.25.",
-  "172.26.",
-  "172.27.",
-  "172.28.",
-  "172.29.",
-  "172.30.",
-  "172.31.",
-  "192.168.",
-  "169.254.",
-  "0.",
-];
+const ALLOWED_HOSTS = new Set(
+  (process.env.PROXY_ALLOWED_HOSTS?.split(",") ?? DEFAULT_ALLOWED_HOSTS)
+    .map((host) => host.trim().toLowerCase())
+    .filter(Boolean)
+);
 
 function isBlockedIp(ip: string): boolean {
-  return BLOCKED_IP_PREFIXES.includes(ip) || ip === "::1" || ip === "::" || ip.startsWith("fc") || ip.startsWith("fd") || ip.startsWith("fe8");
+  const version = isIP(ip);
+  if (version === 4) {
+    const [a, b] = ip.split(".").map(Number);
+    return (
+      a === 0 ||
+      a === 10 ||
+      a === 127 ||
+      (a === 100 && b >= 64 && b <= 127) ||
+      (a === 169 && b === 254) ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && b === 0) ||
+      (a === 192 && b === 168) ||
+      (a === 198 && (b === 18 || b === 19)) ||
+      a >= 224
+    );
+  }
+
+  if (version === 6) {
+    const normalized = ip.toLowerCase();
+    if (normalized === "::" || normalized === "::1") return true;
+    if (normalized.startsWith("fc") || normalized.startsWith("fd")) return true;
+    if (/^fe[89ab]/.test(normalized)) return true;
+    if (normalized.startsWith("ff") || normalized.startsWith("2001:db8")) return true;
+
+    const mappedIpv4 = normalized.match(/::ffff:(\d+\.\d+\.\d+\.\d+)$/)?.[1];
+    return mappedIpv4 ? isBlockedIp(mappedIpv4) : false;
+  }
+
+  return true;
+}
+
+async function validateTarget(value: string, base?: URL): Promise<URL> {
+  const target = new URL(value, base);
+
+  if (target.protocol !== "https:") throw new Error("Only HTTPS URLs are allowed");
+  if (target.username || target.password) throw new Error("URL credentials are not allowed");
+  if (target.port && target.port !== "443") throw new Error("Custom ports are not allowed");
+  if (!ALLOWED_HOSTS.has(target.hostname.toLowerCase())) {
+    throw new Error("This URL host is not allowed");
+  }
+
+  let addresses: Awaited<ReturnType<typeof lookup>>;
+  try {
+    addresses = await lookup(target.hostname, { all: true });
+  } catch {
+    throw new Error("Could not resolve URL host");
+  }
+  if (addresses.length === 0 || addresses.some(({ address }) => isBlockedIp(address))) {
+    throw new Error("Private or reserved IP targets are not allowed");
+  }
+
+  return target;
+}
+
+async function fetchUpstream(initialTarget: URL, signal: AbortSignal): Promise<Response> {
+  let target = initialTarget;
+
+  for (let redirects = 0; redirects <= MAX_REDIRECTS; redirects += 1) {
+    const response = await fetch(target, {
+      headers: {
+        "User-Agent": "memoria-proxy/1.0",
+        Accept: "application/json",
+      },
+      redirect: "manual",
+      signal,
+    });
+
+    if (response.status < 300 || response.status >= 400) return response;
+
+    const location = response.headers.get("location");
+    if (!location) throw new Error("Upstream returned an invalid redirect");
+    if (redirects === MAX_REDIRECTS) throw new Error("Too many upstream redirects");
+    target = await validateTarget(location, target);
+  }
+
+  throw new Error("Too many upstream redirects");
 }
 
 export async function handler(req: Request): Promise<Response> {
@@ -43,43 +104,23 @@ export async function handler(req: Request): Promise<Response> {
   }
 
   const target = body?.url;
-  if (typeof target !== "string" || !/^https?:\/\//i.test(target)) {
-    return Response.json({ error: "url must be an http(s) URL" }, { status: 400 });
+  if (typeof target !== "string") {
+    return Response.json({ error: "url must be an HTTPS URL" }, { status: 400 });
   }
 
-  let hostname: string;
+  let targetUrl: URL;
   try {
-    hostname = new URL(target).hostname;
-  } catch {
-    return Response.json({ error: "Invalid URL" }, { status: 400 });
-  }
-
-  if (hostname === "localhost" || hostname.endsWith(".local")) {
-    return Response.json({ error: "Private hosts are not allowed" }, { status: 403 });
-  }
-
-  try {
-    const addresses = await lookup(hostname, { all: true });
-    for (const { address } of addresses) {
-      if (isBlockedIp(address)) {
-        return Response.json({ error: "Private IP targets are not allowed" }, { status: 403 });
-      }
-    }
-  } catch {
-    return Response.json({ error: "Could not resolve host" }, { status: 400 });
+    targetUrl = await validateTarget(target);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Invalid URL";
+    return Response.json({ error: message }, { status: 400 });
   }
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8000);
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
-    const upstream = await fetch(target, {
-      headers: {
-        "User-Agent": "memoria-proxy/1.0",
-        Accept: "application/json",
-      },
-      signal: controller.signal,
-    });
+    const upstream = await fetchUpstream(targetUrl, controller.signal);
 
     if (!upstream.ok) {
       return Response.json(
