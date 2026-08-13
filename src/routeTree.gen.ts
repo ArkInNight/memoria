@@ -11,14 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BannersRouteImport } from './routes/banners'
-import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ImportRouteImport } from './routes/import'
 import { Route as ProfilesRouteImport } from './routes/profiles'
 import { Route as BannersIndexRouteImport } from './routes/banners/index'
 import { Route as BannersBannerIdRouteImport } from './routes/banners/$bannerId'
-import { Route as BannersCurrentRouteImport } from './routes/banners/current'
 import { Route as ImportIndexRouteImport } from './routes/import/index'
-import { Route as ImportLogRouteImport } from './routes/import/log'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,11 +25,6 @@ const IndexRoute = IndexRouteImport.update({
 const BannersRoute = BannersRouteImport.update({
   id: '/banners',
   path: '/banners',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HistoryRoute = HistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ImportRoute = ImportRouteImport.update({
@@ -55,41 +47,25 @@ const BannersBannerIdRoute = BannersBannerIdRouteImport.update({
   path: '/$bannerId',
   getParentRoute: () => BannersRoute,
 } as any)
-const BannersCurrentRoute = BannersCurrentRouteImport.update({
-  id: '/current',
-  path: '/current',
-  getParentRoute: () => BannersRoute,
-} as any)
 const ImportIndexRoute = ImportIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => ImportRoute,
-} as any)
-const ImportLogRoute = ImportLogRouteImport.update({
-  id: '/log',
-  path: '/log',
   getParentRoute: () => ImportRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/banners': typeof BannersRouteWithChildren
-  '/history': typeof HistoryRoute
   '/import': typeof ImportRouteWithChildren
   '/profiles': typeof ProfilesRoute
   '/banners/$bannerId': typeof BannersBannerIdRoute
-  '/banners/current': typeof BannersCurrentRoute
-  '/import/log': typeof ImportLogRoute
   '/banners/': typeof BannersIndexRoute
   '/import/': typeof ImportIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/history': typeof HistoryRoute
   '/profiles': typeof ProfilesRoute
   '/banners/$bannerId': typeof BannersBannerIdRoute
-  '/banners/current': typeof BannersCurrentRoute
-  '/import/log': typeof ImportLogRoute
   '/banners': typeof BannersIndexRoute
   '/import': typeof ImportIndexRoute
 }
@@ -97,12 +73,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/banners': typeof BannersRouteWithChildren
-  '/history': typeof HistoryRoute
   '/import': typeof ImportRouteWithChildren
   '/profiles': typeof ProfilesRoute
   '/banners/$bannerId': typeof BannersBannerIdRoute
-  '/banners/current': typeof BannersCurrentRoute
-  '/import/log': typeof ImportLogRoute
   '/banners/': typeof BannersIndexRoute
   '/import/': typeof ImportIndexRoute
 }
@@ -111,34 +84,20 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/banners'
-    | '/history'
     | '/import'
     | '/profiles'
     | '/banners/$bannerId'
-    | '/banners/current'
-    | '/import/log'
     | '/banners/'
     | '/import/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/history'
-    | '/profiles'
-    | '/banners/$bannerId'
-    | '/banners/current'
-    | '/import/log'
-    | '/banners'
-    | '/import'
+  to: '/' | '/profiles' | '/banners/$bannerId' | '/banners' | '/import'
   id:
     | '__root__'
     | '/'
     | '/banners'
-    | '/history'
     | '/import'
     | '/profiles'
     | '/banners/$bannerId'
-    | '/banners/current'
-    | '/import/log'
     | '/banners/'
     | '/import/'
   fileRoutesById: FileRoutesById
@@ -146,7 +105,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BannersRoute: typeof BannersRouteWithChildren
-  HistoryRoute: typeof HistoryRoute
   ImportRoute: typeof ImportRouteWithChildren
   ProfilesRoute: typeof ProfilesRoute
 }
@@ -165,13 +123,6 @@ declare module '@tanstack/react-router' {
       path: '/banners'
       fullPath: '/banners'
       preLoaderRoute: typeof BannersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/history': {
-      id: '/history'
-      path: '/history'
-      fullPath: '/history'
-      preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/import': {
@@ -202,13 +153,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BannersBannerIdRouteImport
       parentRoute: typeof BannersRoute
     }
-    '/banners/current': {
-      id: '/banners/current'
-      path: '/current'
-      fullPath: '/banners/current'
-      preLoaderRoute: typeof BannersCurrentRouteImport
-      parentRoute: typeof BannersRoute
-    }
     '/import/': {
       id: '/import/'
       path: '/'
@@ -216,25 +160,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImportIndexRouteImport
       parentRoute: typeof ImportRoute
     }
-    '/import/log': {
-      id: '/import/log'
-      path: '/log'
-      fullPath: '/import/log'
-      preLoaderRoute: typeof ImportLogRouteImport
-      parentRoute: typeof ImportRoute
-    }
   }
 }
 
 interface BannersRouteChildren {
   BannersBannerIdRoute: typeof BannersBannerIdRoute
-  BannersCurrentRoute: typeof BannersCurrentRoute
   BannersIndexRoute: typeof BannersIndexRoute
 }
 
 const BannersRouteChildren: BannersRouteChildren = {
   BannersBannerIdRoute: BannersBannerIdRoute,
-  BannersCurrentRoute: BannersCurrentRoute,
   BannersIndexRoute: BannersIndexRoute,
 }
 
@@ -242,12 +177,10 @@ const BannersRouteWithChildren =
   BannersRoute._addFileChildren(BannersRouteChildren)
 
 interface ImportRouteChildren {
-  ImportLogRoute: typeof ImportLogRoute
   ImportIndexRoute: typeof ImportIndexRoute
 }
 
 const ImportRouteChildren: ImportRouteChildren = {
-  ImportLogRoute: ImportLogRoute,
   ImportIndexRoute: ImportIndexRoute,
 }
 
@@ -257,7 +190,6 @@ const ImportRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BannersRoute: BannersRouteWithChildren,
-  HistoryRoute: HistoryRoute,
   ImportRoute: ImportRouteWithChildren,
   ProfilesRoute: ProfilesRoute,
 }

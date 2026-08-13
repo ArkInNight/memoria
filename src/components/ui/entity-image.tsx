@@ -1,12 +1,5 @@
 import { cn } from "@/lib/utils";
-
-const rarityGradients: Record<number, string> = {
-  6: "from-amber-400 via-amber-600 to-yellow-800",
-  5: "from-purple-400 via-purple-600 to-violet-900",
-  4: "from-blue-400 via-blue-600 to-indigo-900",
-  3: "from-slate-400 via-slate-600 to-slate-800",
-  2: "from-zinc-500 via-zinc-700 to-zinc-900",
-};
+import { rarityStyle } from "@/lib/shared";
 
 interface EntityImageProps {
   name: string;
@@ -24,11 +17,13 @@ export function EntityImage({
   className,
 }: EntityImageProps) {
   if (imageUrl) {
-    return <img src={imageUrl} alt={name} loading="lazy" className={cn("object-cover", className)} />;
+    return (
+      <img src={imageUrl} alt={name} loading="lazy" className={cn("object-cover", className)} />
+    );
   }
 
   const initial = name.trim().charAt(0).toUpperCase() || "?";
-  const gradient = rarityGradients[rarity ?? 0] ?? rarityGradients[3];
+  const gradient = rarityStyle(rarity).gradient;
 
   if (variant === "banner") {
     return (

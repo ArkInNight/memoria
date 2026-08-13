@@ -1,33 +1,22 @@
 import { Link } from "@tanstack/react-router";
-import {
-  LayoutDashboard,
-  History,
-  Archive,
-  Upload,
-  ScrollText,
-  Moon,
-  Sun,
-  Flame,
-  Users,
-} from "lucide-react";
+import { LayoutDashboard, Archive, Upload, Moon, Sun, Flame, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { useActiveProfile, useProfiles, setActive } from "@/lib/store/profiles";
+import { Button } from "../ui/button";
 
 const NAV_ITEMS = [
   { to: "/", icon: <LayoutDashboard size={18} />, label: "Dashboard" },
-  { to: "/history", icon: <History size={18} />, label: "Summon History" },
   { to: "/banners", icon: <Archive size={18} />, label: "Banners Archive" },
-  { to: "/banners/current", icon: <Flame size={16} />, label: "Current Banners" },
   { to: "/import", icon: <Upload size={18} />, label: "Import Summons" },
-  { to: "/import/log", icon: <ScrollText size={18} />, label: "Import Log" },
   { to: "/profiles", icon: <Users size={18} />, label: "Profiles" },
 ];
 
@@ -45,69 +34,63 @@ function NavLink({
   return (
     <Link
       to={to}
-      activeProps={{ className: "bg-primary/20 text-[#e0a05a]" }}
+      aria-label={label}
+      title={label}
+      activeProps={{ className: "bg-primary/15 text-primary" }}
       className={cn(
-        "flex shrink-0 items-center gap-2 rounded-sm px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-white/[0.04] hover:text-foreground",
+        "flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-sm px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground sm:min-h-0 sm:justify-start",
         className
       )}
     >
       {icon}
-      <span>{label}</span>
+      <span className="hidden sm:inline">{label}</span>
     </Link>
   );
 }
 
-function TopNav({
-  darkMode,
-  onToggleTheme,
-}: {
-  darkMode: boolean;
-  onToggleTheme: () => void;
-}) {
+function TopNav({ darkMode, onToggleTheme }: { darkMode: boolean; onToggleTheme: () => void }) {
   const profiles = useProfiles();
   const activeProfile = useActiveProfile();
 
   return (
-    <header className="relative z-10 flex h-16 shrink-0 items-center gap-4 border-b border-sidebar-border bg-sidebar px-4 sm:px-6">
-      <Link to="/" className="flex shrink-0 items-center gap-2">
+    <header className="relative z-10 grid shrink-0 grid-cols-[1fr_auto_auto] items-center gap-x-2 gap-y-1 border-b border-sidebar-border bg-sidebar px-3 py-2 sm:flex sm:h-16 sm:gap-4 sm:px-6 sm:py-0">
+      <Link to="/" className="flex min-h-11 shrink-0 items-center gap-2">
         <Flame size={20} className="text-primary" />
-        <span className="text-lg font-bold tracking-[0.25em] text-primary">MEMORIA</span>
+        <span className="text-base font-bold tracking-[0.18em] text-primary sm:text-lg sm:tracking-[0.25em]">
+          MEMORIA
+        </span>
       </Link>
 
-      <nav className="flex flex-1 items-center gap-1 overflow-x-auto">
+      <nav className="order-last col-span-3 flex w-full items-center justify-center gap-1 sm:order-none sm:col-span-1 sm:flex-1 sm:justify-start sm:overflow-x-auto">
         {NAV_ITEMS.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            icon={item.icon}
-            label={item.label}
-          />
+          <NavLink key={item.to} to={item.to} icon={item.icon} label={item.label} />
         ))}
       </nav>
 
-      <Select
-        value={activeProfile?.id ?? ""}
-        onValueChange={(value) => void setActive(value)}
-      >
-        <SelectTrigger className="w-44 shrink-0 border-sidebar-border bg-white/[0.02]">
-          <SelectValue placeholder="Pilih profile" />
+      <Select value={activeProfile?.id ?? ""} onValueChange={(value) => void setActive(value)}>
+        <SelectTrigger aria-label="Active profile" className="w-32 sm:w-44">
+          <SelectValue placeholder="Select profile" />
         </SelectTrigger>
         <SelectContent>
-          {profiles.map((profile) => (
-            <SelectItem key={profile.id} value={profile.id}>
-              {profile.name}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            {profiles.map((profile) => (
+              <SelectItem key={profile.id} value={profile.id}>
+                {profile.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
 
-      <button
+      <Button
         onClick={onToggleTheme}
-        className="shrink-0 rounded-sm p-2 text-muted-foreground transition hover:bg-white/[0.04] hover:text-foreground"
-        title="Toggle theme"
+        variant="ghost"
+        size="icon"
+        aria-label={darkMode ? "Use light theme" : "Use dark theme"}
+        title={darkMode ? "Use light theme" : "Use dark theme"}
       >
         {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-      </button>
+      </Button>
     </header>
   );
 }

@@ -1,58 +1,77 @@
-import type { PullRecord, ImportSession, DashboardStats, BannerStats, Banner } from "@/lib/shared";
-import { BANNERS, BANNER_RULES } from "./assets";
-import { pityGroupFor } from "./pityEngine";
+import type { PullRecord, BannerStats, Banner } from "@/lib/shared";
 
-export function computeDashboardStats(
-  pulls: PullRecord[],
-  sessions: ImportSession[]
-): DashboardStats {
+export interface TrackerStats {
+  totalSummons: number;
+  clearDrops: number;
+  total6Star: number;
+  total5Star: number;
+  total4Star: number;
+  avg5StarPity: number;
+  avg4StarPity: number;
+  winRate: number;
+  rarityDist: { rarity: number; count: number }[];
+}
+
+const avg = (values: number[]) =>
+  values.length > 0 ? Math.round((values.reduce((a, b) => a + b, 0) / values.length) * 10) / 10 : 0;
+
+/** Most recent 6★ pulls, newest first. */
+export function recentSixStar(pulls: PullRecord[], limit: number): PullRecord[] {
+  return [...pulls]
+    .filter((p) => p.rarity === 6)
+    .sort((a, b) => b.createTime.localeCompare(a.createTime))
+    .slice(0, limit);
+}
+
+/**
+ * Compact tracker-style stats (like the HSR/Star Rail tracker layout).
+ * AVG pity is tracked per rarity tier: the 5★ counter resets on any 5★+ pull,
+ * the 4★ counter resets on any 4★+ pull. Win rate = % of 6★ pulls that were
+ * on-banner (rateOn), among 6★ pulls that had a rate-up check.
+ */
+export function computeTrackerStats(pulls: PullRecord[]): TrackerStats {
   const totalSummons = pulls.length;
-  const total6Star = pulls.filter((p) => p.rarity === 6).length;
-  const total5Star = pulls.filter((p) => p.rarity === 5).length;
-  const total4Star = pulls.filter((p) => p.rarity === 4).length;
 
-  const sortedSessions = [...sessions].sort((a, b) =>
-    b.createTime.localeCompare(a.createTime)
-  );
-  const lastImportTime = sortedSessions[0]?.createTime ?? null;
+  const sorted = [...pulls].sort((a, b) => a.createTime.localeCompare(b.createTime));
 
-  // Current pity/guarantee is tracked on the character-banner pity group only.
-  const bannerMap = new Map(BANNERS.map((b) => [b.name, b]));
-  const charGroupPulls = pulls
-    .filter((p) => {
-      const banner = bannerMap.get(p.poolName);
-      return banner ? pityGroupFor(banner, BANNER_RULES) === "character" : false;
-    })
-    .sort((a, b) => a.createTime.localeCompare(b.createTime));
-
-  let currentPity = 0;
-  let currentGuarantee = false;
-
-  for (const pull of charGroupPulls) {
-    currentPity++;
-    if (pull.rarity === 6) {
-      currentPity = 0;
-
-      const banner = bannerMap.get(pull.poolName);
-      if (banner && banner.rateUp6Star && banner.rateUp6Star.length > 0) {
-        const isRateUp = banner.rateUp6Star.includes(pull.name);
-        if (isRateUp) {
-          currentGuarantee = false;
-        } else {
-          currentGuarantee = !currentGuarantee;
-        }
-      }
+  const fivePities: number[] = [];
+  const fourPities: number[] = [];
+  let fiveCounter = 0;
+  let fourCounter = 0;
+  for (const pull of sorted) {
+    fiveCounter++;
+    fourCounter++;
+    if (pull.rarity >= 5) {
+      fivePities.push(fiveCounter);
+      fiveCounter = 0;
+    }
+    if (pull.rarity >= 4) {
+      fourPities.push(fourCounter);
+      fourCounter = 0;
     }
   }
 
+  const checked6Star = pulls.filter((p) => p.rarity === 6 && p.rateOn !== null);
+  const won6Star = checked6Star.filter((p) => p.rateOn === true).length;
+  const winRate = checked6Star.length > 0 ? Math.round((won6Star / checked6Star.length) * 100) : 0;
+
+  const rarityDist = [6, 5, 4, 3, 2]
+    .map((rarity) => ({
+      rarity,
+      count: pulls.filter((p) => p.rarity === rarity).length,
+    }))
+    .filter((r) => r.count > 0);
+
   return {
     totalSummons,
-    currentPity,
-    currentGuarantee,
-    total6Star,
-    total5Star,
-    total4Star,
-    lastImportTime,
+    clearDrops: totalSummons * 160,
+    total6Star: pulls.filter((p) => p.rarity === 6).length,
+    total5Star: pulls.filter((p) => p.rarity === 5).length,
+    total4Star: pulls.filter((p) => p.rarity === 4).length,
+    avg5StarPity: avg(fivePities),
+    avg4StarPity: avg(fourPities),
+    winRate,
+    rarityDist,
   };
 }
 
@@ -60,10 +79,7 @@ export function computeBannerStats(banner: Banner, pulls: PullRecord[]): BannerS
   const pulls6Star = pulls.filter((p) => p.rarity === 6);
   const pityList = pulls6Star.map((p) => p.pity);
 
-  const avgPity6Star =
-    pityList.length > 0
-      ? Math.round((pityList.reduce((a, b) => a + b, 0) / pityList.length) * 10) / 10
-      : 0;
+  const avgPity6Star = avg(pityList);
   const highestPity6Star = pityList.length > 0 ? Math.max(...pityList) : 0;
   const lowestPity6Star = pityList.length > 0 ? Math.min(...pityList) : 0;
 
@@ -71,6 +87,7 @@ export function computeBannerStats(banner: Banner, pulls: PullRecord[]): BannerS
     name: banner.name,
     type: banner.type,
     totalPulls: pulls.length,
+    total4Star: pulls.filter((p) => p.rarity === 4).length,
     avgPity6Star,
     highestPity6Star,
     lowestPity6Star,

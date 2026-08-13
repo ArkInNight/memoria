@@ -1,4 +1,20 @@
 [
+{
+  "name": "A Beating Heart Beneath the Stone",
+  "nameCN": "石心瓦解时",
+  "type": "rerun",
+  "version": "AH Collab",
+  "startDate": "2026-08-11 05:00:00",
+  "endDate": "2026-08-25 04:59:00",
+  "rateUp6Star": [
+    "Sentinel"
+  ],
+  "rateUp5Star": [
+    "Balloon Party",
+    "Diggers"
+  ],
+  "imageUrl": "/images/banners/a-beating-heart-beneath-the-stone-ah-collab.webp"
+},
   {
     "name": "Conduit of the Unseen",
     "nameCN": "渡影归真",
@@ -13,7 +29,7 @@
       "Tennant",
       "Baby Blue"
     ],
-    "imageUrl": "/images/banners/conduit-of-the-unseen.webp"
+    "imageUrl": "/images/banners/conduit-of-the-unseen-3.7.webp"
   },
   {
     "name": "The Mourner's Eulogy",
@@ -29,7 +45,7 @@
       "Satsuki",
       "Yenisei"
     ],
-    "imageUrl": "/images/banners/the-mourner-s-eulogy.webp"
+    "imageUrl": "/images/banners/the-mourner-s-eulogy-3.7.webp"
   },
   {
     "name": "Beneath the Guise of Her Cocoon",
@@ -38,7 +54,9 @@
     "version": "3.7",
     "startDate": "2026-09-03 05:00:00",
     "endDate": "2026-09-24 04:59:00",
-    "rateUp6Star": [],
+    "rateUp6Star": [
+      "Ms. Stranger"
+    ],
     "rateUp5Star": [
       "X",
       "Barbara"
@@ -48,7 +66,7 @@
   {
     "name": "From the Lake's Heart",
     "nameCN": "湖心追述",
-    "type": "lake-promise",
+    "type": "promise",
     "version": "3.7",
     "startDate": "2026-09-01 05:00:00",
     "endDate": "2026-09-24 04:59:00",
@@ -75,18 +93,74 @@
       "Necrologist",
       "Bkornblume"
     ],
-    "imageUrl": "/images/banners/a-shell-on-the-waves.webp"
+    "imageUrl": "/images/banners/a-shell-on-the-waves-3.7.webp"
   },
   {
     "name": "Promise of the Water",
     "nameCN": "湖的应许",
-    "type": "lake-promise",
+    "type": "promise",
     "version": "3.7",
     "startDate": "2026-08-22 05:00:00",
     "endDate": "2026-09-24 04:59:00",
-    "rateUp6Star": [],
+    "rateUp6Star": [
+      "A Knight",
+      "An-an Lee",
+      "Centurion",
+      "Druvis III",
+      "Eternity",
+      "Lilya",
+      "Medicine Pocket",
+      "Ms. NewBabel",
+      "Regulus",
+      "Sotheby",
+      "Voyager",
+      "Melania",
+      "Pickles",
+      "Jessica",
+      "Tooth Fairy",
+      "Kaalaa Baunaa",
+      "Shamane",
+      "6",
+      "37",
+      "Ezra",
+      "Spathodea",
+      "Getian",
+      "Isolde",
+      "Marcus",
+      "Vila",
+      "Windsong",
+      "Kakania",
+      "Semmelweis",
+      "J",
+      "Mercuria",
+      "Argus",
+      "Tuesday",
+      "Lopera",
+      "Willow",
+      "Flutterpage",
+      "Ulrich",
+      "Barcarola",
+      "Fatutu",
+      "Noire",
+      "Aleph",
+      "Recoleta",
+      "Hissabeth",
+      "Kiperina",
+      "Moldir",
+      "Charon",
+      "Sentinel",
+      "Corvus",
+      "Rubuska",
+      "Brume",
+      "Igor",
+      "Marsha",
+      "Cheng Heguang",
+      "Lorentz Butterfly",
+      "Ramona",
+      "Coppélia"
+    ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/promise-of-the-water.webp"
+    "imageUrl": null
   },
   {
     "name": "Myth at Her Fingertips",
@@ -137,7 +211,7 @@
       "Spathodea"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": null
   },
   {
     "name": "Yearning of the Water",
@@ -151,7 +225,7 @@
       "Cheng Heguang"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-ah-collab.webp"
   },
   {
     "name": "The Book of Whys",
@@ -167,7 +241,7 @@
       "Necrologist",
       "Name Day"
     ],
-    "imageUrl": "/images/banners/the-book-of-whys.webp"
+    "imageUrl": "/images/banners/the-book-of-whys-ah-collab.webp"
   },
   {
     "name": "Analysis of Metallic Dramaturgy",
@@ -183,7 +257,7 @@
       "Satsuki",
       "Brimley"
     ],
-    "imageUrl": "/images/banners/analysis-of-metallic-dramaturgy.webp"
+    "imageUrl": "/images/banners/analysis-of-metallic-dramaturgy-ah-collab.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -202,7 +276,7 @@
       "6"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-ah-collab.webp"
   },
   {
     "name": "The Oath Unyielding",
@@ -218,7 +292,7 @@
       "Avgust",
       "Horropedia"
     ],
-    "imageUrl": "/images/banners/the-oath-unyielding.webp"
+    "imageUrl": "/images/banners/the-oath-unyielding-3.6.webp"
   },
   {
     "name": "Deciphering Reality",
@@ -234,7 +308,7 @@
       "Sweetheart",
       "Charlie"
     ],
-    "imageUrl": "/images/banners/deciphering-reality.webp"
+    "imageUrl": "/images/banners/deciphering-reality-3.6.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -252,7 +326,7 @@
       "Isolde"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-3.6.webp"
   },
   {
     "name": "Playing in Rainbow Clef",
@@ -268,7 +342,7 @@
       "Bkornblume",
       "Charlie"
     ],
-    "imageUrl": "/images/banners/playing-in-rainbow-clef.webp"
+    "imageUrl": "/images/banners/playing-in-rainbow-clef-3.5.webp"
   },
   {
     "name": "Conduit of the Unseen",
@@ -284,7 +358,7 @@
       "Loggerhead",
       "Kanjira"
     ],
-    "imageUrl": "/images/banners/conduit-of-the-unseen.webp"
+    "imageUrl": "/images/banners/conduit-of-the-unseen-3.5.webp"
   },
   {
     "name": "Clash 'n' Slash",
@@ -300,7 +374,7 @@
       "Sweetheart",
       "Click"
     ],
-    "imageUrl": "/images/banners/clash-n-slash.webp"
+    "imageUrl": "/images/banners/clash-n-slash-3.5.webp"
   },
   {
     "name": "Wirewalking in Zero Gravity",
@@ -316,7 +390,7 @@
       "Dikke",
       "Desert Flannel"
     ],
-    "imageUrl": "/images/banners/wirewalking-in-zero-gravity.webp"
+    "imageUrl": "/images/banners/wirewalking-in-zero-gravity-3.5.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -330,7 +404,7 @@
       "Brume"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-3.5.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -348,7 +422,7 @@
       "Tooth Fairy"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": null
   },
   {
     "name": "The Strange Attractor",
@@ -364,7 +438,7 @@
       "X",
       "Barbara"
     ],
-    "imageUrl": "/images/banners/the-strange-attractor.webp"
+    "imageUrl": "/images/banners/the-strange-attractor-3.5.webp"
   },
   {
     "name": "Into the Mirrors",
@@ -379,7 +453,7 @@
     "rateUp5Star": [
       "Yenisei"
     ],
-    "imageUrl": "/images/banners/observation-into-the-mirrors.webp"
+    "imageUrl": "/images/banners/into-the-mirrors-1.9.webp"
   },
   {
     "name": "Soaring Aspirations",
@@ -395,7 +469,7 @@
       "Blonney",
       "Baby Blue"
     ],
-    "imageUrl": "/images/banners/soaring-aspirations.webp"
+    "imageUrl": "/images/banners/soaring-aspirations-3.4.webp"
   },
   {
     "name": "A Life in Montage",
@@ -411,12 +485,12 @@
       "Balloon Party",
       "Diggers"
     ],
-    "imageUrl": "/images/banners/a-life-in-montage.webp"
+    "imageUrl": "/images/banners/a-life-in-montage-3.4.webp"
   },
   {
     "name": "From the Lake's Heart",
     "nameCN": "湖心追述",
-    "type": "lake-promise",
+    "type": "promise",
     "version": "3.4",
     "startDate": "2026-05-01 05:00:00",
     "endDate": "2026-05-22 04:59:00",
@@ -442,7 +516,7 @@
       "Bkornblume",
       "Horropedia"
     ],
-    "imageUrl": "/images/banners/moonbeam-guardian.webp"
+    "imageUrl": "/images/banners/moonbeam-guardian-3.4.webp"
   },
   {
     "name": "The Midnight Flutist",
@@ -458,7 +532,7 @@
       "Necrologist",
       "Name Day"
     ],
-    "imageUrl": "/images/banners/the-midnight-flutist.webp"
+    "imageUrl": "/images/banners/the-midnight-flutist-3.4.webp"
   },
   {
     "name": "Her Heart-Cut Spring",
@@ -474,18 +548,67 @@
       "Ulu",
       "Tennant"
     ],
-    "imageUrl": "/images/banners/her-heart-cut-spring.webp"
+    "imageUrl": "/images/banners/her-heart-cut-spring-3.4.webp"
   },
   {
     "name": "Revelation of the Water",
     "nameCN": "湖的启示",
-    "type": "lake-revelation",
+    "type": "revelation",
     "version": "3.4",
     "startDate": "2026-04-16 05:00:00",
     "endDate": "2026-05-18 04:59:00",
-    "rateUp6Star": [],
+    "rateUp6Star": [
+      "A Knight",
+      "An-an Lee",
+      "Centurion",
+      "Druvis III",
+      "Eternity",
+      "Lilya",
+      "Medicine Pocket",
+      "Ms. NewBabel",
+      "Regulus",
+      "Sotheby",
+      "Voyager",
+      "Melania",
+      "Pickles",
+      "Jessica",
+      "Tooth Fairy",
+      "Kaalaa Baunaa",
+      "Shamane",
+      "6",
+      "37",
+      "Ezra",
+      "Spathodea",
+      "Getian",
+      "Isolde",
+      "Marcus",
+      "Vila",
+      "Windsong",
+      "Kakania",
+      "Semmelweis",
+      "J",
+      "Mercuria",
+      "Argus",
+      "Tuesday",
+      "Lopera",
+      "Willow",
+      "Flutterpage",
+      "Ulrich",
+      "Barcarola",
+      "Fatutu",
+      "Noire",
+      "Aleph",
+      "Recoleta",
+      "Hissabeth",
+      "Kiperina",
+      "Moldir",
+      "Charon",
+      "Sentinel",
+      "Corvus",
+      "Rubuska"
+    ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/revelation-of-the-water.webp"
+    "imageUrl": "/images/banners/revelation-of-the-water-3.4.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -505,7 +628,7 @@
       "An-an Lee"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-3.4.webp"
   },
   {
     "name": "Serpentine Century",
@@ -521,7 +644,7 @@
       "Satsuki",
       "Brimley"
     ],
-    "imageUrl": "/images/banners/serpentine-century.webp"
+    "imageUrl": "/images/banners/serpentine-century-3.3.webp"
   },
   {
     "name": "The Snow of Dushuo",
@@ -566,7 +689,7 @@
       "Charon"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-3.3.webp"
   },
   {
     "name": "Witness of Iron and Blood",
@@ -582,7 +705,7 @@
       "Baby Blue",
       "Horropedia"
     ],
-    "imageUrl": "/images/banners/witness-of-iron-and-blood.webp"
+    "imageUrl": "/images/banners/witness-of-iron-and-blood-3.3.webp"
   },
   {
     "name": "Blue Lullaby",
@@ -598,7 +721,7 @@
       "Charlie",
       "Bkornblume"
     ],
-    "imageUrl": "/images/banners/blue-lullaby.webp"
+    "imageUrl": "/images/banners/blue-lullaby-3.3.webp"
   },
   {
     "name": "From the Ruin of the Past",
@@ -614,7 +737,7 @@
       "Avgust",
       "Desert Flannel"
     ],
-    "imageUrl": "/images/banners/from-the-ruin-of-the-past.webp"
+    "imageUrl": "/images/banners/from-the-ruin-of-the-past-3.3.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -632,7 +755,7 @@
       "Kaalaa Baunaa"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-3.3.webp"
   },
   {
     "name": "The Oath Unyielding",
@@ -648,7 +771,7 @@
       "Sweetheart",
       "Click"
     ],
-    "imageUrl": "/images/banners/the-oath-unyielding.webp"
+    "imageUrl": "/images/banners/the-oath-unyielding-3.3.webp"
   },
   {
     "name": "Cognitive Dynamics",
@@ -664,7 +787,7 @@
       "Necrologist",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/cognitive-dynamics.webp"
+    "imageUrl": "/images/banners/cognitive-dynamics-3.2.webp"
   },
   {
     "name": "The Brilliance Within",
@@ -679,7 +802,7 @@
     "rateUp5Star": [
       "Diggers"
     ],
-    "imageUrl": "/images/banners/the-brilliance-within.webp"
+    "imageUrl": "/images/banners/the-brilliance-within-3.2.webp"
   },
   {
     "name": "The Fairies Shining at Night",
@@ -695,7 +818,7 @@
       "Ulu",
       "Tennant"
     ],
-    "imageUrl": "/images/banners/the-fairies-shining-at-night.webp"
+    "imageUrl": "/images/banners/the-fairies-shining-at-night-3.2.webp"
   },
   {
     "name": "Longing for Innocence",
@@ -711,7 +834,7 @@
       "X",
       "Yenisei"
     ],
-    "imageUrl": "/images/banners/longing-for-innocence.webp"
+    "imageUrl": "/images/banners/longing-for-innocence-3.2.webp"
   },
   {
     "name": "The Chirps of Flame",
@@ -727,12 +850,12 @@
       "Name Day",
       "Balloon Party"
     ],
-    "imageUrl": "/images/banners/the-chirps-of-flame.webp"
+    "imageUrl": "/images/banners/the-chirps-of-flame-3.2.webp"
   },
   {
     "name": "Boon of the Water",
     "nameCN": "湖的馈赠",
-    "type": "lake-gift",
+    "type": "boon",
     "version": "3.2",
     "startDate": "2026-01-20 05:00:00",
     "endDate": "2026-02-12 04:59:00",
@@ -748,7 +871,7 @@
       "37"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/boon-of-the-water.webp"
+    "imageUrl": "/images/banners/boon-of-the-water-3.2.webp"
   },
   {
     "name": "On Fate's Cue",
@@ -764,7 +887,7 @@
       "Blonney",
       "Loggerhead"
     ],
-    "imageUrl": "/images/banners/on-fate-s-cue.webp"
+    "imageUrl": "/images/banners/on-fate-s-cue-3.2.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -782,7 +905,7 @@
       "Marcus"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-3.2.webp"
   },
   {
     "name": "Seeker in the Cave",
@@ -798,7 +921,7 @@
       "Kanjira",
       "Barbara"
     ],
-    "imageUrl": "/images/banners/seeker-in-the-cave.webp"
+    "imageUrl": "/images/banners/seeker-in-the-cave-3.1.webp"
   },
   {
     "name": "The Land's Iron Stitch",
@@ -814,7 +937,7 @@
       "Satsuki",
       "Sweetheart"
     ],
-    "imageUrl": "/images/banners/the-land-s-iron-stitch.webp"
+    "imageUrl": "/images/banners/the-land-s-iron-stitch-3.1.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -828,7 +951,7 @@
       "Aleph"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-3.1.webp"
   },
   {
     "name": "The Intersecting Lines",
@@ -844,12 +967,12 @@
       "Brimley",
       "Charlie"
     ],
-    "imageUrl": "/images/banners/the-intersecting-lines.webp"
+    "imageUrl": "/images/banners/the-intersecting-lines-3.1.webp"
   },
   {
     "name": "Covenant of the Water",
     "nameCN": "湖的许诺",
-    "type": "lake-vow",
+    "type": "covenant",
     "version": "3.1",
     "startDate": "2025-12-20 05:00:00",
     "endDate": "2026-01-03 04:59:00",
@@ -874,7 +997,7 @@
       "Marcus"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/covenant-of-the-water.webp"
+    "imageUrl": "/images/banners/covenant-of-the-water-3.1.webp"
   },
   {
     "name": "Calming Hues in Frenzied NIghts",
@@ -890,7 +1013,7 @@
       "Bkornblume",
       "Horropedia"
     ],
-    "imageUrl": "/images/banners/calming-hues-in-frenzied-nights.webp"
+    "imageUrl": "/images/banners/calming-hues-in-frenzied-nights-3.1.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -907,7 +1030,7 @@
       "Medicine Pocket"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-3.1.webp"
   },
   {
     "name": "The Midnight Flutist",
@@ -923,7 +1046,7 @@
       "Click",
       "Baby Blue"
     ],
-    "imageUrl": "/images/banners/the-midnight-flutist.webp"
+    "imageUrl": "/images/banners/the-midnight-flutist-3.1.webp"
   },
   {
     "name": "Beyond the World of Matters",
@@ -939,7 +1062,7 @@
       "Desert Flannel",
       "Avgust"
     ],
-    "imageUrl": "/images/banners/beyond-the-world-of-matters.webp"
+    "imageUrl": "/images/banners/beyond-the-world-of-matters-3.0.webp"
   },
   {
     "name": "The Mourner's Eulogy",
@@ -955,7 +1078,7 @@
       "Blonney",
       "Tennant"
     ],
-    "imageUrl": "/images/banners/the-mourner-s-eulogy.webp"
+    "imageUrl": "/images/banners/the-mourner-s-eulogy-3.0.webp"
   },
   {
     "name": "Vissi D'arte, Vissi D'amore",
@@ -971,7 +1094,7 @@
       "Name Day",
       "Ulu"
     ],
-    "imageUrl": "/images/banners/vissi-d-arte-vissi-d-amore.webp"
+    "imageUrl": "/images/banners/vissi-d-arte-vissi-d-amore-2.3.webp"
   },
   {
     "name": "The Book of Whys",
@@ -987,7 +1110,7 @@
       "Balloon Party",
       "Loggerhead"
     ],
-    "imageUrl": "/images/banners/the-book-of-whys.webp"
+    "imageUrl": "/images/banners/the-book-of-whys-3.0.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -1001,7 +1124,7 @@
       "Recoleta"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-3.0.webp"
   },
   {
     "name": "A Beating Heart Beneath the Stone",
@@ -1016,7 +1139,7 @@
     "rateUp5Star": [
       "Dikke"
     ],
-    "imageUrl": "/images/banners/a-beating-heart-beneath-the-stone.webp"
+    "imageUrl": "/images/banners/a-beating-heart-beneath-the-stone-3.0.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -1034,7 +1157,7 @@
       "Medicine Pocket"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-3.0.webp"
   },
   {
     "name": "Clash 'n' Slash",
@@ -1050,7 +1173,7 @@
       "Yenisei",
       "Necrologist"
     ],
-    "imageUrl": "/images/banners/clash-n-slash.webp"
+    "imageUrl": "/images/banners/clash-n-slash-3.5.webp"
   },
   {
     "name": "From the Ruin of the Past",
@@ -1066,7 +1189,7 @@
       "Baby Blue",
       "X"
     ],
-    "imageUrl": "/images/banners/from-the-ruin-of-the-past.webp"
+    "imageUrl": "/images/banners/from-the-ruin-of-the-past-2.8.webp"
   },
   {
     "name": "Fledgling's First Flight",
@@ -1082,7 +1205,7 @@
       "Satsuki",
       "Charlie"
     ],
-    "imageUrl": "/images/banners/fledgling-s-first-flight.webp"
+    "imageUrl": "/images/banners/fledgling-s-first-flight-2.8.webp"
   },
   {
     "name": "Thoughts in Cylinder",
@@ -1098,7 +1221,7 @@
       "Brimley",
       "Kanjira"
     ],
-    "imageUrl": "/images/banners/thoughts-in-cylinder.webp"
+    "imageUrl": "/images/banners/thoughts-in-cylinder-2.8.webp"
   },
   {
     "name": "Into the Mirrors",
@@ -1114,7 +1237,7 @@
       "Horropedia",
       "Click"
     ],
-    "imageUrl": "/images/banners/observation-into-the-mirrors.webp"
+    "imageUrl": "/images/banners/into-the-mirrors-1.9.webp"
   },
   {
     "name": "Myth at Her Fingertips",
@@ -1135,13 +1258,55 @@
   {
     "name": "Promise of the Water",
     "nameCN": "湖的应许",
-    "type": "lake-promise",
+    "type": "promise",
     "version": "2.8",
     "startDate": "2025-09-19 05:00:00",
     "endDate": "2025-10-09 04:59:00",
-    "rateUp6Star": [],
+    "rateUp6Star": [
+      "A Knight",
+      "An-an Lee",
+      "Centurion",
+      "Druvis III",
+      "Eternity",
+      "Lilya",
+      "Medicine Pocket",
+      "Ms. NewBabel",
+      "Regulus",
+      "Sotheby",
+      "Voyager",
+      "Melania",
+      "Pickles",
+      "Jessica",
+      "Tooth Fairy",
+      "Kaalaa Baunaa",
+      "Shamane",
+      "6",
+      "37",
+      "Ezra",
+      "Spathodea",
+      "Getian",
+      "Isolde",
+      "Marcus",
+      "Vila",
+      "Windsong",
+      "Kakania",
+      "Semmelweis",
+      "J",
+      "Mercuria",
+      "Argus",
+      "Tuesday",
+      "Lopera",
+      "Willow",
+      "Flutterpage",
+      "Ulrich",
+      "Barcarola",
+      "Fatutu",
+      "Noire",
+      "Aleph",
+      "Recoleta"
+    ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/promise-of-the-water.webp"
+    "imageUrl": "/images/banners/promise-of-the-water-2.8.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -1159,7 +1324,7 @@
       "Melania"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-2.8.webp"
   },
   {
     "name": "A Life in Montage",
@@ -1175,7 +1340,7 @@
       "Barbara",
       "Desert Flannel"
     ],
-    "imageUrl": "/images/banners/a-life-in-montage.webp"
+    "imageUrl": "/images/banners/a-life-in-montage-ac-collab.webp"
   },
   {
     "name": "Wine-Dark Reflections of the Eagle",
@@ -1191,7 +1356,7 @@
       "Balloon Party",
       "Blonney"
     ],
-    "imageUrl": "/images/banners/wine-dark-reflections-of-the-eagle.webp"
+    "imageUrl": "/images/banners/wine-dark-reflections-of-the-eagle-ac-collab.webp"
   },
   {
     "name": "That Steady Evening Star",
@@ -1207,7 +1372,7 @@
       "Bkornblume",
       "Loggerhead"
     ],
-    "imageUrl": "/images/banners/that-steady-evening-star.webp"
+    "imageUrl": "/images/banners/that-steady-evening-star-2.2.webp"
   },
   {
     "name": "When the Swan Dances",
@@ -1222,7 +1387,7 @@
     "rateUp5Star": [
       "Ulu"
     ],
-    "imageUrl": "/images/banners/when-the-swan-dances.webp"
+    "imageUrl": "/images/banners/when-the-swan-dances-ac-collab.webp"
   },
   {
     "name": "A Prophet Guided by Time",
@@ -1238,7 +1403,7 @@
       "Tennant",
       "Avgust"
     ],
-    "imageUrl": "/images/banners/a-prophet-guided-by-time.webp"
+    "imageUrl": "/images/banners/a-prophet-guided-by-time-ac-collab.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -1256,7 +1421,7 @@
       "Melania"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-ac-collab.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -1270,7 +1435,7 @@
       "Flutterpage"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-2.7.webp"
   },
   {
     "name": "Over the New Leaf",
@@ -1286,7 +1451,7 @@
       "Dikke",
       "Sweetheart"
     ],
-    "imageUrl": "/images/banners/over-the-new-leaf.webp"
+    "imageUrl": "/images/banners/over-the-new-leaf-2.7.webp"
   },
   {
     "name": "Wirewalking in Zero Gravity",
@@ -1302,7 +1467,7 @@
       "Charlie",
       "Horropedia"
     ],
-    "imageUrl": "/images/banners/wirewalking-in-zero-gravity.webp"
+    "imageUrl": "/images/banners/wirewalking-in-zero-gravity-2.7.webp"
   },
   {
     "name": "Calming Hues in Frenzied Nights",
@@ -1318,7 +1483,7 @@
       "Yenisei",
       "Click"
     ],
-    "imageUrl": "/images/banners/calming-hues-in-frenzied-nights.webp"
+    "imageUrl": "/images/banners/calming-hues-in-frenzied-nights-2.7.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -1335,7 +1500,7 @@
       "Jessica"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-2.7.webp"
   },
   {
     "name": "Serpentine Century",
@@ -1350,7 +1515,7 @@
     "rateUp5Star": [
       "Name Day"
     ],
-    "imageUrl": "/images/banners/serpentine-century.webp"
+    "imageUrl": "/images/banners/serpentine-century-2.7.webp"
   },
   {
     "name": "Shooting in the Dark",
@@ -1366,7 +1531,7 @@
       "Brimley",
       "Necrologist"
     ],
-    "imageUrl": "/images/banners/shooting-in-the-dark.webp"
+    "imageUrl": "/images/banners/shooting-in-the-dark-2.6.webp"
   },
   {
     "name": "The Shattered Product",
@@ -1382,7 +1547,7 @@
       "Satsuki",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/the-shattered-product.webp"
+    "imageUrl": "/images/banners/the-shattered-product-2.6.webp"
   },
   {
     "name": "The Fairies Shining at Night",
@@ -1398,7 +1563,7 @@
       "Kanjira",
       "Baby Blue"
     ],
-    "imageUrl": "/images/banners/the-fairies-shining-at-night.webp"
+    "imageUrl": "/images/banners/the-fairies-shining-at-night-3.2.webp"
   },
   {
     "name": "Blue Lullaby",
@@ -1414,7 +1579,7 @@
       "Avgust",
       "Yenisei"
     ],
-    "imageUrl": "/images/banners/blue-lullaby.webp"
+    "imageUrl": "/images/banners/blue-lullaby-2.6.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -1428,7 +1593,7 @@
       "Lopera"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-2.6.webp"
   },
   {
     "name": "A Writing Writer Written",
@@ -1444,7 +1609,7 @@
       "X",
       "Diggers"
     ],
-    "imageUrl": "/images/banners/a-writing-writer-written.webp"
+    "imageUrl": "/images/banners/a-writing-writer-written-2.6.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -1461,7 +1626,7 @@
       "Eternity"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-2.6.webp"
   },
   {
     "name": "The Mirror's Lonely Watcher",
@@ -1477,7 +1642,7 @@
       "Blonney",
       "Horropedia"
     ],
-    "imageUrl": "/images/banners/the-mirror-s-lonely-watcher.webp"
+    "imageUrl": "/images/banners/the-mirror-s-lonely-watcher-2.5.webp"
   },
   {
     "name": "A Life in Montage",
@@ -1493,7 +1658,7 @@
       "Sweetheart",
       "Charlie"
     ],
-    "imageUrl": "/images/banners/a-life-in-montage.webp"
+    "imageUrl": "/images/banners/a-life-in-montage-2.5.webp"
   },
   {
     "name": "Ode to the Utopia",
@@ -1509,7 +1674,7 @@
       "Ulu",
       "Balloon Party"
     ],
-    "imageUrl": "/images/banners/ode-to-the-utopia.webp"
+    "imageUrl": "/images/banners/ode-to-the-utopia-2.5.webp"
   },
   {
     "name": "Till the Last Drop",
@@ -1525,12 +1690,12 @@
       "Tennant",
       "Yenisei"
     ],
-    "imageUrl": "/images/banners/till-the-last-drop.webp"
+    "imageUrl": "/images/banners/till-the-last-drop-2.5.webp"
   },
   {
     "name": "Revelation of the Water",
     "nameCN": "湖的启示",
-    "type": "lake-revelation",
+    "type": "revelation",
     "version": "2.5",
     "startDate": "2025-05-01 05:00:00",
     "endDate": "2025-05-21 04:59:00",
@@ -1569,7 +1734,7 @@
       "Lopera"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/revelation-of-the-water.webp"
+    "imageUrl": "/images/banners/revelation-of-the-water-2.5.webp"
   },
   {
     "name": "Moonbeam Guardian",
@@ -1584,7 +1749,7 @@
     "rateUp5Star": [
       "Loggerhead"
     ],
-    "imageUrl": "/images/banners/moonbeam-guardian.webp"
+    "imageUrl": "/images/banners/moonbeam-guardian-2.5.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -1601,7 +1766,7 @@
       "Jessica"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-2.5.webp"
   },
   {
     "name": "Seeker in the Cave",
@@ -1617,7 +1782,7 @@
       "Barbara",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/seeker-in-the-cave.webp"
+    "imageUrl": "/images/banners/seeker-in-the-cave-2.4.webp"
   },
   {
     "name": "A Shell on the Waves",
@@ -1633,7 +1798,7 @@
       "Satsuki",
       "Tennant"
     ],
-    "imageUrl": "/images/banners/a-shell-on-the-waves.webp"
+    "imageUrl": "/images/banners/a-shell-on-the-waves-2.4.webp"
   },
   {
     "name": "The Intersecting Lines",
@@ -1649,7 +1814,7 @@
       "Avgust",
       "Click"
     ],
-    "imageUrl": "/images/banners/the-intersecting-lines.webp"
+    "imageUrl": "/images/banners/the-intersecting-lines-2.4.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -1663,7 +1828,7 @@
       "J"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": null
   },
   {
     "name": "Playing in Rainbow Clef",
@@ -1679,7 +1844,7 @@
       "Necrologist",
       "Baby Blue"
     ],
-    "imageUrl": "/images/banners/playing-in-rainbow-clef.webp"
+    "imageUrl": "/images/banners/playing-in-rainbow-clef-2.4.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -1694,7 +1859,7 @@
       "Voyager"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-2.4.webp"
   },
   {
     "name": "Clang of Sword & Armor",
@@ -1710,7 +1875,7 @@
       "Kanjira",
       "Yenisei"
     ],
-    "imageUrl": "/images/banners/clang-of-sword-and-armor.webp"
+    "imageUrl": "/images/banners/clang-of-sword-armor-2.3.webp"
   },
   {
     "name": "Swinging Freely",
@@ -1726,7 +1891,7 @@
       "Bkornblume",
       "Ulu"
     ],
-    "imageUrl": "/images/banners/swinging-freely.webp"
+    "imageUrl": "/images/banners/swinging-freely-2.3.webp"
   },
   {
     "name": "The Book of Whys",
@@ -1741,7 +1906,7 @@
     "rateUp5Star": [
       "Brimley"
     ],
-    "imageUrl": "/images/banners/the-book-of-whys.webp"
+    "imageUrl": "/images/banners/the-book-of-whys-2.3.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -1755,7 +1920,7 @@
       "Kakania"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-2.3.webp"
   },
   {
     "name": "Vissi D'arte, Vissi D'amore",
@@ -1771,7 +1936,7 @@
       "Charlie",
       "Click"
     ],
-    "imageUrl": "/images/banners/vissi-d-arte-vissi-d-amore.webp"
+    "imageUrl": "/images/banners/vissi-d-arte-vissi-d-amore-2.3.webp"
   },
   {
     "name": "Ripples on the Water",
@@ -1788,7 +1953,7 @@
       "Shamane"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/ripples-on-the-water.webp"
+    "imageUrl": "/images/banners/ripples-on-the-water-2.3.webp"
   },
   {
     "name": "When the Swan Dances",
@@ -1804,7 +1969,7 @@
       "Kanjira",
       "X"
     ],
-    "imageUrl": "/images/banners/when-the-swan-dances.webp"
+    "imageUrl": "/images/banners/when-the-swan-dances-2.3.webp"
   },
   {
     "name": "The Changeling Awaits",
@@ -1820,7 +1985,7 @@
       "Sweetheart",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/the-changeling-awaits.webp"
+    "imageUrl": "/images/banners/the-changeling-awaits-2.2.webp"
   },
   {
     "name": "Fledgling's First Flight",
@@ -1836,7 +2001,7 @@
       "Ulu",
       "Click"
     ],
-    "imageUrl": "/images/banners/fledgling-s-first-flight.webp"
+    "imageUrl": "/images/banners/fledgling-s-first-flight-2.2.webp"
   },
   {
     "name": "Seeker in the Cave",
@@ -1845,17 +2010,17 @@
     "version": "2.2",
     "startDate": "2025-01-28 05:00:00",
     "endDate": "2025-02-11 04:59:00",
-    "rateUp6Star": [],
+    "rateUp6Star": ["6"],
     "rateUp5Star": [
       "Desert Flannel",
       "Horropedia"
     ],
-    "imageUrl": "/images/banners/seeker-in-the-cave.webp"
+    "imageUrl": "/images/banners/seeker-in-the-cave-2.2.webp"
   },
   {
     "name": "Boon of the Water",
     "nameCN": "湖的馈赠",
-    "type": "lake-gift",
+    "type": "boon",
     "version": "2.2",
     "startDate": "2025-01-25 05:00:00",
     "endDate": "2025-02-15 04:59:00",
@@ -1868,7 +2033,7 @@
       "Marcus"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/boon-of-the-water.webp"
+    "imageUrl": "/images/banners/boon-of-the-water-2.2.webp"
   },
   {
     "name": "That Steady Evening Star",
@@ -1884,7 +2049,7 @@
       "Balloon Party",
       "Yenisei"
     ],
-    "imageUrl": "/images/banners/that-steady-evening-star.webp"
+    "imageUrl": "/images/banners/that-steady-evening-star-2.2.webp"
   },
   {
     "name": "Longing for Innocence",
@@ -1897,7 +2062,7 @@
       "Anjo Nala"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/longing-for-innocence.webp"
+    "imageUrl": "/images/banners/longing-for-innocence-2.2.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -1911,7 +2076,7 @@
       "Vila"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-2.1.webp"
   },
   {
     "name": "Another Spring Thaw",
@@ -1927,12 +2092,12 @@
       "Blonney",
       "Necrologist"
     ],
-    "imageUrl": "/images/banners/another-spring-thaw.webp"
+    "imageUrl": "/images/banners/another-spring-thaw-2.1.webp"
   },
   {
     "name": "Invitation from the Water",
     "nameCN": "湖的邀约",
-    "type": "lake-invitation",
+    "type": "invitation",
     "version": "2.1",
     "startDate": "2024-12-28 05:00:00",
     "endDate": "2025-01-11 04:59:00",
@@ -1959,7 +2124,7 @@
       "6"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/invitation-from-the-water.webp"
+    "imageUrl": "/images/banners/invitation-from-the-water-2.1.webp"
   },
   {
     "name": "Shooting in the Dark",
@@ -1975,7 +2140,7 @@
       "Satsuki",
       "Tennant"
     ],
-    "imageUrl": "/images/banners/shooting-in-the-dark.webp"
+    "imageUrl": "/images/banners/shooting-in-the-dark-2.1.webp"
   },
   {
     "name": "Beyond the World of Matters",
@@ -1984,12 +2149,12 @@
     "version": "2.1",
     "startDate": "2024-12-17 05:00:00",
     "endDate": "2024-12-31 04:59:00",
-    "rateUp6Star": [],
+    "rateUp6Star": ["37"],
     "rateUp5Star": [
       "Kanjira",
       "X"
     ],
-    "imageUrl": "/images/banners/beyond-the-world-of-matters.webp"
+    "imageUrl": "/images/banners/beyond-the-world-of-matters-2.1.webp"
   },
   {
     "name": "Blue Lullaby",
@@ -2004,7 +2169,7 @@
     "rateUp5Star": [
       "Barbara"
     ],
-    "imageUrl": "/images/banners/blue-lullaby.webp"
+    "imageUrl": "/images/banners/blue-lullaby-2.1.webp"
   },
   {
     "name": "The Spores of Peace",
@@ -2020,7 +2185,7 @@
       "Baby Blue",
       "Bkornblume"
     ],
-    "imageUrl": "/images/banners/the-spores-of-peace.webp"
+    "imageUrl": "/images/banners/the-spores-of-peace-2.0.webp"
   },
   {
     "name": "Clash 'n' Slash",
@@ -2036,7 +2201,7 @@
       "Desert Flannel",
       "Tennant"
     ],
-    "imageUrl": "/images/banners/clash-n-slash.webp"
+    "imageUrl": "/images/banners/clash-n-slash-3.5.webp"
   },
   {
     "name": "Swinging Freely",
@@ -2052,7 +2217,7 @@
       "Dikke",
       "Satsuki"
     ],
-    "imageUrl": "/images/banners/swinging-freely.webp"
+    "imageUrl": "/images/banners/swinging-freely-2.0.webp"
   },
   {
     "name": "Midnight Movie Party",
@@ -2068,7 +2233,7 @@
       "Horropedia",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/midnight-movie-party.webp"
+    "imageUrl": "/images/banners/midnight-movie-party-1.7.webp"
   },
   {
     "name": "Whisper of the Woods",
@@ -2084,7 +2249,7 @@
       "Necrologist",
       "Click"
     ],
-    "imageUrl": "/images/banners/whisper-of-the-woods.webp"
+    "imageUrl": "/images/banners/whisper-of-the-woods-2.0.webp"
   },
   {
     "name": "Over the New Leaf",
@@ -2100,7 +2265,7 @@
       "Ulu",
       "Balloon Party"
     ],
-    "imageUrl": "/images/banners/over-the-new-leaf.webp"
+    "imageUrl": "/images/banners/over-the-new-leaf-2.0.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -2114,7 +2279,7 @@
       "6"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-2.0.webp"
   },
   {
     "name": "Calming Hues in Frenzied Nights",
@@ -2130,7 +2295,7 @@
       "Charlie",
       "Click"
     ],
-    "imageUrl": "/images/banners/calming-hues-in-frenzied-nights.webp"
+    "imageUrl": "/images/banners/calming-hues-in-frenzied-nights-2.0.webp"
   },
   {
     "name": "Where the Star Alighted",
@@ -2146,7 +2311,7 @@
       "Kanjira",
       "Baby Blue"
     ],
-    "imageUrl": "/images/banners/where-the-star-alighted.webp"
+    "imageUrl": "/images/banners/where-the-star-alighted-1.5.webp"
   },
   {
     "name": "Into the Mirrors",
@@ -2162,7 +2327,7 @@
       "Satsuki",
       "Diggers"
     ],
-    "imageUrl": "/images/banners/observation-into-the-mirrors.webp"
+    "imageUrl": "/images/banners/into-the-mirrors-1.9.webp"
   },
   {
     "name": "The Fairies Shining at Night",
@@ -2178,7 +2343,7 @@
       "Bkornblume",
       "Yenisei"
     ],
-    "imageUrl": "/images/banners/the-fairies-shining-at-night.webp"
+    "imageUrl": "/images/banners/the-fairies-shining-at-night-1.9.webp"
   },
   {
     "name": "Level Seven Biter",
@@ -2194,12 +2359,12 @@
       "Horropedia",
       "Charlie"
     ],
-    "imageUrl": "/images/banners/level-seven-biter.webp"
+    "imageUrl": "/images/banners/level-seven-biter-1.3.webp"
   },
   {
     "name": "Promise of the Water",
     "nameCN": "湖的应许",
-    "type": "lake-promise",
+    "type": "promise",
     "version": "1.9",
     "startDate": "2024-09-21 05:00:00",
     "endDate": "2024-10-12 04:59:00",
@@ -2228,7 +2393,7 @@
       "Semmelweis"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/promise-of-the-water.webp"
+    "imageUrl": "/images/banners/promise-of-the-water-1.9.webp"
   },
   {
     "name": "Thoughts in Cylinder",
@@ -2244,7 +2409,7 @@
       "X",
       "Necrologist"
     ],
-    "imageUrl": "/images/banners/thoughts-in-cylinder.webp"
+    "imageUrl": "/images/banners/thoughts-in-cylinder-1.9.webp"
   },
   {
     "name": "Swinging Freely",
@@ -2260,7 +2425,7 @@
       "Ulu",
       "Balloon Party"
     ],
-    "imageUrl": "/images/banners/swinging-freely.webp"
+    "imageUrl": "/images/banners/swinging-freely-1.8.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -2274,7 +2439,7 @@
       "Shamane"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-1.8.webp"
   },
   {
     "name": "The Intersecting Lines",
@@ -2290,7 +2455,7 @@
       "Blonney",
       "Sweetheart"
     ],
-    "imageUrl": "/images/banners/the-intersecting-lines.webp"
+    "imageUrl": "/images/banners/the-intersecting-lines-1.8.webp"
   },
   {
     "name": "Whisper of the Woods",
@@ -2306,7 +2471,7 @@
       "Desert Flannel",
       "Baby Blue"
     ],
-    "imageUrl": "/images/banners/whisper-of-the-woods.webp"
+    "imageUrl": "/images/banners/whisper-of-the-woods-1.8.webp"
   },
   {
     "name": "Ode to the Utopia",
@@ -2321,7 +2486,7 @@
     "rateUp5Star": [
       "Avgust"
     ],
-    "imageUrl": "/images/banners/ode-to-the-utopia.webp"
+    "imageUrl": "/images/banners/ode-to-the-utopia-1.8.webp"
   },
   {
     "name": "Seeker in the Cave",
@@ -2337,7 +2502,7 @@
       "Horropedia",
       "Diggers"
     ],
-    "imageUrl": "/images/banners/seeker-in-the-cave.webp"
+    "imageUrl": "/images/banners/seeker-in-the-cave-1.7.webp"
   },
   {
     "name": "Reading in Sea Breeze",
@@ -2353,7 +2518,7 @@
       "Charlie",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/reading-in-sea-breeze.webp"
+    "imageUrl": "/images/banners/reading-in-sea-breeze-1.7.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -2367,7 +2532,7 @@
       "Jessica"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-1.7.webp"
   },
   {
     "name": "Midnight Movie Party",
@@ -2383,7 +2548,7 @@
       "Kanjira",
       "Satsuki"
     ],
-    "imageUrl": "/images/banners/midnight-movie-party.webp"
+    "imageUrl": "/images/banners/midnight-movie-party-1.7.webp"
   },
   {
     "name": "The Arrow Breaks Through the Air",
@@ -2399,7 +2564,7 @@
       "Sweetheart",
       "X"
     ],
-    "imageUrl": "/images/banners/the-arrow-breaks-through-the-air.webp"
+    "imageUrl": "/images/banners/the-arrow-breaks-through-the-air-1.7.webp"
   },
   {
     "name": "Vissi D'arte, Vissi D'amore",
@@ -2415,7 +2580,7 @@
       "Tennant",
       "Necrologist"
     ],
-    "imageUrl": "/images/banners/vissi-d-arte-vissi-d-amore.webp"
+    "imageUrl": "/images/banners/vissi-d-arte-vissi-d-amore-2.3.webp"
   },
   {
     "name": "Another Spring Thaw",
@@ -2431,7 +2596,7 @@
       "Baby Blue",
       "Charlie"
     ],
-    "imageUrl": "/images/banners/another-spring-thaw.webp"
+    "imageUrl": "/images/banners/another-spring-thaw-1.6.webp"
   },
   {
     "name": "Over the New Leaf",
@@ -2447,7 +2612,7 @@
       "X",
       "Bkornblume"
     ],
-    "imageUrl": "/images/banners/over-the-new-leaf.webp"
+    "imageUrl": "/images/banners/over-the-new-leaf-1.6.webp"
   },
   {
     "name": "Pop is Everything",
@@ -2463,12 +2628,12 @@
       "Balloon Party",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/pop-is-everything.webp"
+    "imageUrl": "/images/banners/pop-is-everything-1.1.webp"
   },
   {
     "name": "Revelation of the Water",
     "nameCN": "湖的启示",
-    "type": "lake-revelation",
+    "type": "revelation",
     "version": "1.6",
     "startDate": "2024-06-08 05:00:00",
     "endDate": "2024-06-22 04:59:00",
@@ -2491,7 +2656,7 @@
       "Kaalaa Baunaa"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/revelation-of-the-water.webp"
+    "imageUrl": "/images/banners/revelation-of-the-water-1.6.webp"
   },
   {
     "name": "The Era of Great Speech",
@@ -2500,12 +2665,12 @@
     "version": "1.6",
     "startDate": "2024-06-04 05:00:00",
     "endDate": "2024-06-18 04:59:00",
-    "rateUp6Star": [],
+    "rateUp6Star": ["Ms. NewBabel"],
     "rateUp5Star": [
       "Kanjira",
       "Diggers"
     ],
-    "imageUrl": "/images/banners/the-era-of-great-speech.webp"
+    "imageUrl": "/images/banners/the-era-of-great-speech-1.6.webp"
   },
   {
     "name": "Till the Last Drop",
@@ -2521,7 +2686,7 @@
       "Yenisei",
       "Click"
     ],
-    "imageUrl": "/images/banners/till-the-last-drop.webp"
+    "imageUrl": "/images/banners/till-the-last-drop-1.6.webp"
   },
   {
     "name": "Clang of Sword & Armor",
@@ -2537,7 +2702,7 @@
       "Bkornblume",
       "Blonney"
     ],
-    "imageUrl": "/images/banners/clang-of-sword-and-armor.webp"
+    "imageUrl": "/images/banners/clang-of-sword-armor-2.3.webp"
   },
   {
     "name": "The Spores of Peace",
@@ -2553,7 +2718,7 @@
       "Desert Flannel",
       "Satsuki"
     ],
-    "imageUrl": "/images/banners/the-spores-of-peace.webp"
+    "imageUrl": "/images/banners/the-spores-of-peace-1.5.webp"
   },
   {
     "name": "Swinging Freely",
@@ -2569,7 +2734,7 @@
       "X",
       "Sweetheart"
     ],
-    "imageUrl": "/images/banners/swinging-freely.webp"
+    "imageUrl": "/images/banners/swinging-freely-1.5.webp"
   },
   {
     "name": "Yearning of the Water",
@@ -2583,7 +2748,7 @@
       "Centurion"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/yearning-of-the-water.webp"
+    "imageUrl": "/images/banners/yearning-of-the-water-1.5.webp"
   },
   {
     "name": "Where the Star Alighted",
@@ -2599,7 +2764,7 @@
       "Necrologist",
       "Balloon Party"
     ],
-    "imageUrl": "/images/banners/where-the-star-alighted.webp"
+    "imageUrl": "/images/banners/where-the-star-alighted-1.5.webp"
   },
   {
     "name": "The Chirps of Flame",
@@ -2615,7 +2780,7 @@
       "Ulu",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/the-chirps-of-flame.webp"
+    "imageUrl": "/images/banners/the-chirps-of-flame-1.5.webp"
   },
   {
     "name": "The Ever-flowing",
@@ -2631,7 +2796,7 @@
       "Satsuki",
       "Charlie"
     ],
-    "imageUrl": "/images/banners/the-ever-flowing.webp"
+    "imageUrl": "/images/banners/the-ever-flowing-1.4.webp"
   },
   {
     "name": "Seeker in the Cave",
@@ -2647,7 +2812,7 @@
       "Baby Blue",
       "Click"
     ],
-    "imageUrl": "/images/banners/seeker-in-the-cave.webp"
+    "imageUrl": "/images/banners/seeker-in-the-cave-1.4.webp"
   },
   {
     "name": "One Gram of Curiosity",
@@ -2663,7 +2828,7 @@
       "Bkornblume",
       "Diggers"
     ],
-    "imageUrl": "/images/banners/one-gram-of-curiosity.webp"
+    "imageUrl": "/images/banners/one-gram-of-curiosity-1.4.webp"
   },
   {
     "name": "Thus Spoke the Border Collie",
@@ -2679,12 +2844,12 @@
       "Balloon Party",
       "Necrologist"
     ],
-    "imageUrl": "/images/banners/thus-spoke-the-border-collie.webp"
+    "imageUrl": "/images/banners/thus-spoke-the-border-collie-1.4.webp"
   },
   {
     "name": "Abundance of the Water: The First Milestone",
     "nameCN": "湖的丰饶：直至再次启程",
-    "type": "lake-promise",
+    "type": "promise",
     "version": "1.4",
     "startDate": "2024-03-07 05:00:00",
     "endDate": "2024-04-18 04:59:00",
@@ -2695,7 +2860,7 @@
       "Voyager"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/abundance-of-the-water-the-first-milestone.webp"
+    "imageUrl": "/images/banners/abundance-of-the-water-the-first-milestone-1.4.webp"
   },
   {
     "name": "Beyond the World of Matters",
@@ -2711,7 +2876,7 @@
       "Sweetheart",
       "Tennant"
     ],
-    "imageUrl": "/images/banners/beyond-the-world-of-matters.webp"
+    "imageUrl": "/images/banners/beyond-the-world-of-matters-1.4.webp"
   },
   {
     "name": "The Arrow Breaks Through the Air",
@@ -2727,7 +2892,7 @@
       "Dikke",
       "X"
     ],
-    "imageUrl": "/images/banners/the-arrow-breaks-through-the-air.webp"
+    "imageUrl": "/images/banners/the-arrow-breaks-through-the-air-1.3.webp"
   },
   {
     "name": "The Era of Great Speech",
@@ -2736,12 +2901,12 @@
     "version": "1.3",
     "startDate": "2024-02-13 05:00:00",
     "endDate": "2024-02-27 04:59:00",
-    "rateUp6Star": [],
+    "rateUp6Star": ["Ms. NewBabel"],
     "rateUp5Star": [
       "Charlie",
       "Click"
     ],
-    "imageUrl": "/images/banners/the-era-of-great-speech.webp"
+    "imageUrl": "/images/banners/the-era-of-great-speech-1.3.webp"
   },
   {
     "name": "Another Spring Thaw",
@@ -2757,7 +2922,7 @@
       "Balloon Party",
       "Satsuki"
     ],
-    "imageUrl": "/images/banners/another-spring-thaw.webp"
+    "imageUrl": "/images/banners/another-spring-thaw-1.3.webp"
   },
   {
     "name": "Level Seven Biter",
@@ -2773,7 +2938,7 @@
       "Bkornblume",
       "Baby Blue"
     ],
-    "imageUrl": "/images/banners/level-seven-biter.webp"
+    "imageUrl": "/images/banners/level-seven-biter-1.3.webp"
   },
   {
     "name": "That Steady Evening Star",
@@ -2789,7 +2954,7 @@
       "Kanjira",
       "Tennant"
     ],
-    "imageUrl": "/images/banners/that-steady-evening-star.webp"
+    "imageUrl": "/images/banners/that-steady-evening-star-1.3.webp"
   },
   {
     "name": "Focus of the Lights",
@@ -2805,7 +2970,7 @@
       "X",
       "Dikke"
     ],
-    "imageUrl": "/images/banners/focus-of-the-lights.webp"
+    "imageUrl": "/images/banners/focus-of-the-lights-1.2.webp"
   },
   {
     "name": "Midnight Movie Party",
@@ -2821,12 +2986,12 @@
       "Baby Blue",
       "Sweetheart"
     ],
-    "imageUrl": "/images/banners/midnight-movie-party.webp"
+    "imageUrl": "/images/banners/midnight-movie-party-1.2.webp"
   },
   {
     "name": "Invitation from the Water",
     "nameCN": "湖的邀约",
-    "type": "lake-invitation",
+    "type": "invitation",
     "version": "1.2",
     "startDate": "2023-12-30 05:00:00",
     "endDate": "2024-01-13 04:59:00",
@@ -2843,7 +3008,7 @@
       "Regulus"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/invitation-from-the-water.webp"
+    "imageUrl": "/images/banners/invitation-from-the-water-1.2.webp"
   },
   {
     "name": "The Changeling Awaits",
@@ -2859,7 +3024,7 @@
       "Necrologist",
       "Horropedia"
     ],
-    "imageUrl": "/images/banners/the-changeling-awaits.webp"
+    "imageUrl": "/images/banners/the-changeling-awaits-1.2.webp"
   },
   {
     "name": "The Ever-flowing",
@@ -2875,7 +3040,7 @@
       "Charlie",
       "Click"
     ],
-    "imageUrl": "/images/banners/the-ever-flowing.webp"
+    "imageUrl": "/images/banners/the-ever-flowing-1.2.webp"
   },
   {
     "name": "The Fairies Shining at Night",
@@ -2891,7 +3056,7 @@
       "Bkornblume",
       "Blonney"
     ],
-    "imageUrl": "/images/banners/the-fairies-shining-at-night.webp"
+    "imageUrl": "/images/banners/the-fairies-shining-at-night-1.2.webp"
   },
   {
     "name": "Where The Star Alighted",
@@ -2907,7 +3072,7 @@
       "X",
       "Balloon Party"
     ],
-    "imageUrl": "/images/banners/where-the-star-alighted.webp"
+    "imageUrl": "/images/banners/where-the-star-alighted-1.1.webp"
   },
   {
     "name": "Thus Spoke The Border Collie",
@@ -2923,7 +3088,7 @@
       "Baby Blue",
       "Diggers"
     ],
-    "imageUrl": "/images/banners/thus-spoke-the-border-collie.webp"
+    "imageUrl": "/images/banners/thus-spoke-the-border-collie-1.4.webp"
   },
   {
     "name": "Pop is Everything",
@@ -2939,7 +3104,7 @@
       "Sweetheart",
       "Balloon Party"
     ],
-    "imageUrl": "/images/banners/pop-is-everything.webp"
+    "imageUrl": "/images/banners/pop-is-everything-1.1.webp"
   },
   {
     "name": "Amongst the Lake",
@@ -2950,7 +3115,7 @@
     "endDate": null,
     "rateUp6Star": [],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/amongst-the-lake.webp"
+    "imageUrl": "/images/banners/amid-the-lake-1.0.webp"
   },
   {
     "name": "Clang of Sword & Armor",
@@ -2966,7 +3131,7 @@
       "Tennant",
       "Bkornblume"
     ],
-    "imageUrl": "/images/banners/clang-of-sword-and-armor.webp"
+    "imageUrl": "/images/banners/clang-of-sword-armor-2.3.webp"
   },
   {
     "name": "One Gram of Curiosity",
@@ -2982,7 +3147,7 @@
       "Charlie",
       "X"
     ],
-    "imageUrl": "/images/banners/one-gram-of-curiosity.webp"
+    "imageUrl": "/images/banners/one-gram-of-curiosity-1.4.webp"
   },
   {
     "name": "The First Drop of Rain",
@@ -2990,36 +3155,36 @@
     "type": "beginner",
     "version": "1.0",
     "startDate": "2023-10-26 05:00:00",
-    "endDate": null,
+    "endDate": "2025-01-09 05:00:00",
     "rateUp6Star": [
       "Lilya",
       "Regulus",
       "Eternity"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/the-first-drop-of-rain.webp"
+    "imageUrl": "/images/banners/the-first-drop-of-rain-1.0.webp"
   },
   {
     "name": "The First Drop of Rain",
     "nameCN": "第一滴雨",
     "type": "beginner",
     "version": "2.2",
-    "startDate": null,
-    "endDate": null,
+    "startDate": "2025-01-09 05:00:00",
+    "endDate": "2025-07-03 05:00:00",
     "rateUp6Star": [
       "Druvis III",
       "Lilya",
       "Melania"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/the-first-drop-of-rain.webp"
+    "imageUrl": "/images/banners/the-first-drop-of-rain-1.0.webp"
   },
   {
     "name": "The First Drop of Rain",
     "nameCN": "第一滴雨",
     "type": "beginner",
     "version": "2.7",
-    "startDate": null,
+    "startDate": "2025-07-03 05:00:00",
     "endDate": null,
     "rateUp6Star": [
       "Melania",
@@ -3027,6 +3192,6 @@
       "Jessica"
     ],
     "rateUp5Star": [],
-    "imageUrl": "/images/banners/the-first-drop-of-rain.webp"
+    "imageUrl": "/images/banners/the-first-drop-of-rain-1.0.webp"
   }
 ]

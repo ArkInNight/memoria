@@ -17,62 +17,52 @@
   "collaboration": {
     "pityPool": "collaboration",
     "carryOver": false,
-    "rateUp": "5050",
-    "milestoneCopies": [100, 160, 220, 280]
+    "rateUp": "5050"
   },
   "ripples": {
     "pityPool": "ripples",
     "carryOver": true,
-    "rateUp": "100-first",
-    "selector": 1
+    "rateUp": "100-first"
   },
-  "lake-promise": {
-    "pityPool": "lake-promise",
+  "promise": {
+    "pityPool": "promise",
     "carryOver": false,
-    "rateUp": "5050",
-    "selector": 1
+    "rateUp": "5050"
   },
-  "lake-revelation": {
-    "pityPool": "lake-revelation",
+  "revelation": {
+    "pityPool": "revelation",
     "carryOver": false,
-    "rateUp": "7030",
-    "selector": 2
+    "rateUp": "5050"
   },
-  "lake-gift": {
-    "pityPool": "lake-gift",
+  "boon": {
+    "pityPool": "boon",
     "carryOver": false,
-    "rateUp": "100",
-    "selector": 3
+    "rateUp": "100"
   },
-  "lake-invitation": {
-    "pityPool": "lake-invitation",
+  "invitation": {
+    "pityPool": "invitation",
     "carryOver": false,
-    "rateUp": "box",
-    "pullCap": 40
+    "rateUp": "5050"
   },
-  "lake-vow": {
-    "pityPool": "lake-vow",
+  "covenant": {
+    "pityPool": "covenant",
     "carryOver": false,
-    "rateUp": "box",
-    "pullCap": 60
+    "rateUp": "5050"
   },
   "snow": {
     "pityPool": "snow",
     "carryOver": false,
-    "rateUp": "5050",
-    "selector": 1
+    "rateUp": "5050"
   },
   "yearning": {
     "pityPool": "yearning",
     "carryOver": false,
-    "rateUp": "7030",
-    "selector": 1
+    "rateUp": "5050"
   },
   "beginner": {
     "pityPool": "beginner",
     "carryOver": true,
-    "rateUp": "none",
-    "pullCap": 30
+    "rateUp": "none"
   },
   "standard": {
     "pityPool": "standard",

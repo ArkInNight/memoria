@@ -14,6 +14,7 @@ export interface ImportSummary {
   createdProfiles: number;
   mergedProfiles: number;
   summons: number;
+  duplicateSummons: number;
 }
 
 export async function exportAll(): Promise<BackupFile> {
@@ -65,13 +66,18 @@ export async function importBackup(text: string): Promise<ImportSummary> {
   if (!parsed || parsed.app !== "memoria" || parsed.version !== 1) {
     throw new Error("Bukan file backup Memoria yang valid.");
   }
-  if (!Array.isArray(parsed.profiles) || !Array.isArray(parsed.sessions) || !Array.isArray(parsed.summons)) {
+  if (
+    !Array.isArray(parsed.profiles) ||
+    !Array.isArray(parsed.sessions) ||
+    !Array.isArray(parsed.summons)
+  ) {
     throw new Error("Struktur file backup tidak lengkap.");
   }
 
   let createdProfiles = 0;
   let mergedProfiles = 0;
   let summonsCount = 0;
+  let duplicateSummons = 0;
 
   await db.transaction("rw", [db.profiles, db.sessions, db.summons], async () => {
     for (const p of parsed.profiles) {
@@ -79,9 +85,22 @@ export async function importBackup(text: string): Promise<ImportSummary> {
       const incomingSummons = parsed.summons.filter((s) => s.profileId === p.id);
       const incomingSessions = parsed.sessions.filter((s) => s.profileId === p.id);
 
+      const uniqueSummons = [
+        ...new Map(incomingSummons.map((summon) => [summon.id, summon])).values(),
+      ];
+      const uniqueSessions = [
+        ...new Map(incomingSessions.map((session) => [session.id, session])).values(),
+      ];
+      const summonKeys = uniqueSummons.map((summon) => [p.id, summon.id] as [string, string]);
+      const sessionKeys = uniqueSessions.map((session) => [p.id, session.id] as [string, string]);
+      const [storedSummons, storedSessions] = await Promise.all([
+        db.summons.bulkGet(summonKeys),
+        db.sessions.bulkGet(sessionKeys),
+      ]);
+      const newSummons = uniqueSummons.filter((_, index) => !storedSummons[index]);
+      const newSessions = uniqueSessions.filter((_, index) => !storedSessions[index]);
+
       if (exists) {
-        await db.summons.bulkPut(incomingSummons.map((s) => ({ ...s, profileId: p.id })));
-        await db.sessions.bulkPut(incomingSessions.map((s) => ({ ...s, profileId: p.id })));
         mergedProfiles++;
       } else {
         await db.profiles.add({
@@ -89,16 +108,23 @@ export async function importBackup(text: string): Promise<ImportSummary> {
           name: p.name,
           note: p.note,
           createdAt: p.createdAt,
+          archivedAt: p.archivedAt,
         });
-        await db.summons.bulkPut(incomingSummons.map((s) => ({ ...s, profileId: p.id })));
-        await db.sessions.bulkPut(incomingSessions.map((s) => ({ ...s, profileId: p.id })));
         createdProfiles++;
       }
-      summonsCount += incomingSummons.length;
+
+      if (newSummons.length > 0) {
+        await db.summons.bulkAdd(newSummons.map((summon) => ({ ...summon, profileId: p.id })));
+      }
+      if (newSessions.length > 0) {
+        await db.sessions.bulkAdd(newSessions.map((session) => ({ ...session, profileId: p.id })));
+      }
+      summonsCount += newSummons.length;
+      duplicateSummons += uniqueSummons.length - newSummons.length;
     }
   });
 
-  return { createdProfiles, mergedProfiles, summons: summonsCount };
+  return { createdProfiles, mergedProfiles, summons: summonsCount, duplicateSummons };
 }
 
 export type { PullRecord, ImportSession };

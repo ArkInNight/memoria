@@ -1,58 +1,100 @@
 import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Upload, UserPlus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import {
-  Trophy,
-  Star,
-  Sparkles,
-  CalendarDays,
-  Flame,
-  UserPlus,
-} from "lucide-react";
-import { slugify } from "@/lib/shared";
-import { EntityImage } from "@/components/ui/entity-image";
-import { getCurrentBanners } from "@/lib/domain/assets";
-import { computeDashboardStats } from "@/lib/domain/stats";
-import { useActiveProfile } from "@/lib/store/profiles";
-import { usePullRecords } from "@/lib/store/summons";
-import { useSessions } from "@/lib/store/sessions";
-import { YStack, XStack } from "@/components/layout/stack";
+import { StatsOverview } from "@/components/stats-overview";
+import type { StatRow } from "@/components/stats-overview";
+import { XStack, YStack } from "@/components/layout/stack";
 import { Grid } from "@/components/layout/grid";
-import { Section } from "@/components/layout/section";
-import { Heading, Text } from "@/components/typography";
 import { PageHeader } from "@/components/page-header";
-import { StatCard } from "@/components/stat-card";
 import { EmptyState } from "@/components/empty-state";
-import { Dot } from "@/components/dot";
-import { BannerTypeBadge } from "@/features/banners/components/banner-type-badge";
+import { getCurrentBanners, BANNER_RULES } from "@/lib/domain/assets";
+import { pityPoolOfPull } from "@/lib/domain/pityEngine";
+import { computeTrackerStats } from "@/lib/domain/stats";
+import type { TrackerStats } from "@/lib/domain/stats";
+import { formatNumber, nowString, formatDate, RARITY_STYLE } from "@/lib/shared";
+import { useSummonHistory } from "@/components/history/use-summon-history";
+import { SummonHistorySection } from "@/components/history/summon-history-section";
+import { ActiveBannersSection } from "../components/active-banners-section";
+import { RarityPieChart } from "@/components/rarity-pie-chart";
+import { Recent6StarSection } from "@/components/recent-6star-section";
+import { ShareButton } from "@/features/share/components/share-button";
+import { heroOptionsFromPulls } from "@/features/share/lib/share-card-data";
+import { SHARE_COLORS } from "@/features/share/lib/share-card-data";
+
+function buildTrackerRows(stats: TrackerStats): StatRow[] {
+  return [
+    { label: "Total Summons", value: formatNumber(stats.totalSummons) },
+    { label: "Clear Drops Spent", value: formatNumber(stats.clearDrops) },
+    {
+      label: "5★ Summons",
+      value: stats.total5Star,
+      valueClassName: RARITY_STYLE[5].text,
+    },
+    {
+      label: "4★ Summons",
+      value: stats.total4Star,
+      valueClassName: RARITY_STYLE[4].text,
+    },
+    {
+      label: "AVG 5★ Pity",
+      value: stats.avg5StarPity > 0 ? stats.avg5StarPity : "—",
+    },
+    {
+      label: "AVG 4★ Pity",
+      value: stats.avg4StarPity > 0 ? stats.avg4StarPity : "—",
+    },
+    {
+      label: "Win Rate",
+      value: `${stats.winRate}%`,
+      valueClassName: stats.winRate >= 50 ? "text-success" : undefined,
+    },
+  ];
+}
 
 export function DashboardPage() {
-  const profile = useActiveProfile();
-  const pulls = usePullRecords(profile?.id);
-  const sessions = useSessions(profile?.id);
-
-  const stats = useMemo(
-    () => (profile ? computeDashboardStats(pulls, sessions) : null),
-    [profile, pulls, sessions]
-  );
+  const history = useSummonHistory();
   const activeBanners = useMemo(() => getCurrentBanners(), []);
 
-  if (!profile) {
+  const filteredPulls = useMemo(
+    () =>
+      history.poolFilter === "all"
+        ? history.allPulls
+        : history.allPulls.filter((p) => pityPoolOfPull(p, BANNER_RULES) === history.poolFilter),
+    [history.allPulls, history.poolFilter]
+  );
+
+  const trackerStats = useMemo(() => computeTrackerStats(filteredPulls), [filteredPulls]);
+  const rows = useMemo<StatRow[]>(() => buildTrackerRows(trackerStats), [trackerStats]);
+
+  const shareHeroes = useMemo(() => heroOptionsFromPulls(filteredPulls), [filteredPulls]);
+  const shareStats = useMemo(
+    () => [
+      {
+        label: "Total Summons",
+        value: formatNumber(filteredPulls.length),
+        color: SHARE_COLORS.white,
+      },
+      { label: "6★", value: formatNumber(trackerStats.total6Star), color: SHARE_COLORS.gold },
+      { label: "5★", value: formatNumber(trackerStats.total5Star), color: SHARE_COLORS.purple },
+      { label: "4★", value: formatNumber(trackerStats.total4Star), color: SHARE_COLORS.sky },
+      { label: "Win Rate", value: `${trackerStats.winRate}%`, color: SHARE_COLORS.emerald },
+    ],
+    [filteredPulls, trackerStats]
+  );
+
+  if (!history.profile) {
     return (
       <YStack gap={32}>
-        <PageHeader
-          title="Dashboard"
-          description="Overview of your permanent summon archive."
-        />
+        <PageHeader title="Dashboard" description="Overview of your permanent summon archive." />
         <EmptyState
           icon={<UserPlus className="h-7 w-7 text-primary" />}
-          title="Belum ada profile"
-          description="Buat profile untuk akun game kamu dulu. Semua data summon disimpan hanya di browser kamu — tanpa login."
+          title="No profile yet"
+          description="Create a profile for your game account first. All summon data is stored only in your browser — no login."
           action={
             <Button asChild>
-              <Link to="/profiles">Buat Profile Pertama</Link>
+              <Link to="/profiles">Create Profile</Link>
             </Button>
           }
         />
@@ -61,168 +103,52 @@ export function DashboardPage() {
   }
 
   return (
-    <YStack gap={32}>
-      {/* Header */}
+    <YStack gap={24}>
       <PageHeader
         title="Dashboard"
         description={
-          profile.name
-            ? `Overview of your permanent summon archive — ${profile.name}.`
+          history.profile.name
+            ? `Overview of your permanent summon archive — ${history.profile.name}.`
             : "Overview of your permanent summon archive."
         }
+      >
+        <XStack gap={8}>
+          <Button asChild>
+            <Link to="/import">
+              <Upload className="mr-2 h-4 w-4" />
+              Import Summons
+            </Link>
+          </Button>
+          <ShareButton
+            data={{
+              profileName: history.profile.name || "Player",
+              generatedAt: formatDate(nowString()) || "",
+              stats: shareStats,
+            }}
+            heroes={shareHeroes}
+            pulls={filteredPulls}
+            filename={
+              history.poolFilter === "all"
+                ? history.profile.name || "profile"
+                : `${history.profile.name || "profile"}-${history.poolFilter}`
+            }
+          />
+        </XStack>
+      </PageHeader>
+
+      <ActiveBannersSection
+        banners={activeBanners}
+        selected={history.poolFilter}
+        onSelect={history.setPool}
       />
 
-      {stats ? (
-        <YStack gap={32}>
-          {/* Summary Row */}
-          <Grid cols={1} md={2} lg={4}>
-            <StatCard
-              label="Total Summons"
-              icon={<Trophy className="text-primary h-4 w-4" />}
-              value={stats.totalSummons}
-              hint="Summons stored permanently"
-            />
+      <Grid lg={3} gap={24}>
+        <StatsOverview rows={rows} />
+        <RarityPieChart data={trackerStats.rarityDist} />
+        <Recent6StarSection pulls={filteredPulls} charImageByName={history.charImageByName} />
+      </Grid>
 
-            <StatCard
-              label="Current Pity"
-              icon={<Sparkles className="text-yellow-500 h-4 w-4" />}
-              value={
-                <>
-                  {stats.currentPity}{" "}
-                  <Text size="sm" variant="muted" weight="normal">
-                    / 70
-                  </Text>
-                </>
-              }
-            >
-              <XStack gap={6} className="mt-1">
-                <Dot
-                  className={
-                    stats.currentGuarantee ? "bg-emerald-500" : "bg-yellow-500 animate-pulse"
-                  }
-                />
-                <Text size="xs" variant="muted">
-                  {stats.currentGuarantee ? "Guaranteed Rate Up" : "50/50 Chance"}
-                </Text>
-              </XStack>
-            </StatCard>
-
-            <StatCard
-              label="6★ Characters"
-              icon={<Star className="text-yellow-500 fill-yellow-500 h-4 w-4" />}
-              value={stats.total6Star}
-              valueClassName="text-yellow-500"
-              hint={`${stats.totalSummons > 0 ? ((stats.total6Star / stats.totalSummons) * 100).toFixed(2) : "0"}% rate`}
-            />
-
-            <StatCard
-              label="5★ Characters"
-              icon={<Star className="text-purple-500 fill-purple-500 h-4 w-4" />}
-              value={stats.total5Star}
-              valueClassName="text-purple-500"
-              hint={`${stats.totalSummons > 0 ? ((stats.total5Star / stats.totalSummons) * 100).toFixed(2) : "0"}% rate`}
-            />
-          </Grid>
-
-          {/* Active Banners Shortcut */}
-          {activeBanners && activeBanners.length > 0 && (
-            <Section gap={12}>
-              <XStack gap={8} className="justify-between mb-3">
-                <Heading level={3} className="flex items-center gap-2">
-                  <Flame size={18} className="text-orange-500" />
-                  Active Banners
-                </Heading>
-                <Button asChild variant="ghost" size="sm" className="text-primary">
-                  <Link to="/banners/current">View all →</Link>
-                </Button>
-              </XStack>
-              <Grid gap={16} md={2} lg={3}>
-                {activeBanners.slice(0, 3).map((banner) => (
-                  <Link
-                    key={banner.name}
-                    to="/banners/$bannerId"
-                    params={{ bannerId: slugify(banner.name) }}
-                    className="group overflow-hidden rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition"
-                  >
-                    <EntityImage
-                      variant="banner"
-                      name={banner.name}
-                      imageUrl={banner.imageUrl ?? undefined}
-                      className="aspect-[16/6] w-full"
-                    />
-                    <YStack gap={4} className="p-3">
-                      <XStack gap={8} className="justify-between">
-                        <Text size="sm" weight="semibold" className="truncate">
-                          {banner.name}
-                        </Text>
-                        <BannerTypeBadge
-                          type={banner.type ?? "other"}
-                          className="text-[10px] capitalize shrink-0"
-                        />
-                      </XStack>
-                      <Text size="xs" variant="muted">
-                        Ends {banner.endDate ? banner.endDate.split(" ")[0] : "N/A"}
-                      </Text>
-                    </YStack>
-                  </Link>
-                ))}
-              </Grid>
-            </Section>
-          )}
-
-          {/* Quick Info & Action Banners */}
-          <Grid md={2}>
-            <Card className="p-6 flex flex-col justify-between">
-              <YStack gap={8}>
-                <Heading level={3} className="mb-2">
-                  Import Summon History
-                </Heading>
-                <Text size="sm" variant="muted" className="mb-4">
-                  Keep your archive up to date by importing new summons. Grab your link and paste
-                  it to merge records.
-                </Text>
-              </YStack>
-              <XStack gap={16} className="justify-between mt-2">
-                <XStack gap={6} className="text-xs text-muted-foreground">
-                  <CalendarDays size={14} />
-                  <Text size="xs" variant="muted">
-                    Last imported:{" "}
-                    {stats.lastImportTime ? String(stats.lastImportTime).split(".")[0] : "Never"}
-                  </Text>
-                </XStack>
-                <Button asChild size="sm">
-                  <Link to="/import">Import Now</Link>
-                </Button>
-              </XStack>
-            </Card>
-
-            <Card className="p-6 flex flex-col justify-between">
-              <YStack gap={8}>
-                <Heading level={3} className="mb-2">
-                  Banners & Stats
-                </Heading>
-                <Text size="sm" variant="muted" className="mb-4">
-                  Analyze details, average pity, guarantee status, and history of rate-ups for
-                  specific banners.
-                </Text>
-              </YStack>
-              <XStack gap={8} className="mt-2">
-                <Button asChild variant="outline" size="sm">
-                  <Link to="/banners">Banner Archive</Link>
-                </Button>
-                <Button asChild variant="outline" size="sm">
-                  <Link to="/banners/current">Current Banners</Link>
-                </Button>
-              </XStack>
-            </Card>
-          </Grid>
-        </YStack>
-      ) : (
-        <Card className="p-12 text-center">
-          <Skeleton className="h-8 w-16 mx-auto mb-2" />
-          <Text variant="muted">Loading...</Text>
-        </Card>
-      )}
+      <SummonHistorySection history={history} hideBannerFilter />
     </YStack>
   );
 }

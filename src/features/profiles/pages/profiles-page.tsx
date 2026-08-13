@@ -1,133 +1,156 @@
-import { useRef, useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  UserPlus,
-  Download,
-  Upload,
-  RefreshCw,
-  Users,
-  Database,
-} from "lucide-react";
+import { useState } from "react";
+import { Users } from "lucide-react";
 import { toast } from "sonner";
-import {
-  useProfiles,
-  useActiveProfile,
-  createProfile,
-  renameProfile,
-  updateProfileNote,
-  setActive,
-  deleteProfile,
-} from "@/lib/store/profiles";
-import { exportAll, exportProfile, downloadJson, importBackup } from "@/lib/store/exportImport";
-import { importPulls } from "@/lib/domain/importSummons";
-import { extractPageData } from "@/lib/domain/extractPageData";
-import demoRaw from "../../../../raw/ingame/summon.json";
-import { YStack, XStack, Spacer } from "@/components/layout/stack";
+
+import { Card } from "@/components/ui/card";
+import { YStack } from "@/components/layout/stack";
 import { Grid } from "@/components/layout/grid";
+import { Section } from "@/components/layout/section";
 import { Text } from "@/components/typography";
+import { Heading } from "@/components/typography";
 import { PageHeader } from "@/components/page-header";
 import { Empty, EmptyContent } from "@/components/ui/empty";
+import {
+  useProfiles,
+  useArchivedProfiles,
+  useActiveProfile,
+  createProfile,
+  updateProfile,
+  setActive,
+  archiveProfile,
+  restoreProfile,
+} from "@/lib/store/profiles";
+import { exportAll, exportProfile, downloadJson, importBackup } from "@/lib/store/exportImport";
+import { createDemoProfile } from "@/lib/domain/demoProfile";
 import { ProfileCard } from "../components/profile-card";
+import { ProfileActionsBar } from "../components/profile-actions-bar";
+import { CreateProfileDialog } from "../components/create-profile-dialog";
+import { EditProfileDialog, type ProfileEditState } from "../components/edit-profile-dialog";
+import { ArchiveProfileDialog } from "../components/archive-profile-dialog";
 
 export function ProfilesPage() {
   const profiles = useProfiles();
+  const archivedProfiles = useArchivedProfiles();
   const activeProfile = useActiveProfile();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [createOpen, setCreateOpen] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [newNote, setNewNote] = useState("");
-  const [editing, setEditing] = useState<{ id: string; name: string; note: string } | null>(null);
-  const [isBusy, setIsBusy] = useState(false);
+  const [createEpoch, setCreateEpoch] = useState(0);
+  const [editing, setEditing] = useState<ProfileEditState | null>(null);
+  const [archiving, setArchiving] = useState<{ id: string; name: string } | null>(null);
+  const [pendingAction, setPendingAction] = useState<"demo" | "import" | "export" | null>(null);
 
-  const handleCreate = async () => {
-    if (!newName.trim()) {
-      toast.error("Nama profile tidak boleh kosong.");
-      return;
+  const handleCreate = async (name: string, note: string): Promise<boolean> => {
+    if (!name.trim()) {
+      toast.error("Profile name cannot be empty.");
+      return false;
     }
-    await createProfile(newName, newNote);
-    setNewName("");
-    setNewNote("");
-    setCreateOpen(false);
-    toast.success("Profile dibuat");
+    try {
+      await createProfile(name, note);
+      toast.success("Profile created");
+      return true;
+    } catch (error) {
+      toast.error("Profile creation failed", {
+        description: error instanceof Error ? error.message : "Something went wrong.",
+      });
+      return false;
+    }
   };
 
-  const handleSaveEdit = async () => {
-    if (!editing) return;
-    if (!editing.name.trim()) {
-      toast.error("Nama profile tidak boleh kosong.");
-      return;
+  const handleSaveEdit = async (state: ProfileEditState): Promise<boolean> => {
+    if (!state.name.trim()) {
+      toast.error("Profile name cannot be empty.");
+      return false;
     }
-    await renameProfile(editing.id, editing.name);
-    await updateProfileNote(editing.id, editing.note);
-    setEditing(null);
-    toast.success("Profile diperbarui");
+    try {
+      await updateProfile(state.id, state.name, state.note);
+      toast.success("Profile updated");
+      return true;
+    } catch (error) {
+      toast.error("Profile update failed", {
+        description: error instanceof Error ? error.message : "Something went wrong.",
+      });
+      return false;
+    }
   };
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!window.confirm(`Hapus profile "${name}" beserta semua summon-nya?`)) return;
-    await deleteProfile(id);
-    toast.success("Profile dihapus");
+  const handleArchive = async (id: string) => {
+    try {
+      await archiveProfile(id);
+      toast.success("Profile archived");
+    } catch (error) {
+      toast.error("Profile archive failed", {
+        description: error instanceof Error ? error.message : "Something went wrong.",
+      });
+    }
+  };
+
+  const handleRestore = async (id: string) => {
+    try {
+      await restoreProfile(id);
+      toast.success("Profile restored");
+    } catch (error) {
+      toast.error("Profile restore failed", {
+        description: error instanceof Error ? error.message : "Something went wrong.",
+      });
+    }
   };
 
   const handleExportProfile = async (id: string, name: string) => {
-    const backup = await exportProfile(id);
-    downloadJson(backup, `memoria-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.json`);
+    try {
+      const backup = await exportProfile(id);
+      downloadJson(backup, `memoria-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.json`);
+    } catch (error) {
+      toast.error("Profile export failed", {
+        description: error instanceof Error ? error.message : "Something went wrong.",
+      });
+    }
   };
 
   const handleExportAll = async () => {
-    const backup = await exportAll();
-    downloadJson(backup, `memoria-backup-${new Date().toISOString().slice(0, 10)}.json`);
-    toast.success("Backup semua profile diunduh");
+    setPendingAction("export");
+    try {
+      const backup = await exportAll();
+      downloadJson(backup, `memoria-backup-${new Date().toISOString().slice(0, 10)}.json`);
+      toast.success("All profiles backed up");
+    } catch (error) {
+      toast.error("Backup export failed", {
+        description: error instanceof Error ? error.message : "Something went wrong.",
+      });
+    } finally {
+      setPendingAction(null);
+    }
   };
 
   const handleImportFile = async (file: File) => {
-    setIsBusy(true);
+    setPendingAction("import");
     try {
       const text = await file.text();
       const summary = await importBackup(text);
-      toast.success("Import backup berhasil", {
-        description: `${summary.createdProfiles} profile baru, ${summary.mergedProfiles} digabung, ${summary.summons} summon.`,
+      toast.success("Backup import successful", {
+        description: `${summary.createdProfiles} new profiles, ${summary.mergedProfiles} merged, ${summary.summons} new summons, ${summary.duplicateSummons} duplicates skipped.`,
       });
     } catch (err) {
-      toast.error("Import backup gagal", {
-        description: err instanceof Error ? err.message : "File tidak valid.",
+      toast.error("Backup import failed", {
+        description: err instanceof Error ? err.message : "Invalid file.",
       });
     } finally {
-      setIsBusy(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      setPendingAction(null);
     }
   };
 
   const handleCreateDemo = async () => {
-    setIsBusy(true);
+    setPendingAction("demo");
     try {
-      const pageData = extractPageData(demoRaw);
-      if (!pageData || pageData.length === 0) {
-        throw new Error("Data demo kosong.");
-      }
-      const profile = await createProfile("Akun Demo", "Contoh data summon untuk mencoba fitur.");
-      const res = await importPulls(profile.id, pageData);
-      toast.success("Profile demo dibuat", {
-        description: `${res.importedCount} pull contoh diimport.`,
+      const { importedCount } = await createDemoProfile();
+      toast.success("Demo profile created", {
+        description: `${importedCount} sample pulls imported.`,
       });
     } catch (err) {
-      toast.error("Gagal membuat profile demo", {
-        description: err instanceof Error ? err.message : "Terjadi kesalahan.",
+      toast.error("Failed to create demo profile", {
+        description: err instanceof Error ? err.message : "Something went wrong.",
       });
     } finally {
-      setIsBusy(false);
+      setPendingAction(null);
     }
   };
 
@@ -135,99 +158,37 @@ export function ProfilesPage() {
     <YStack gap={24}>
       <PageHeader
         title="Profiles"
-        description="Profile mewakili satu akun game. Semua data disimpan hanya di browser kamu — tanpa login."
+        description="A profile represents one game account. All data is stored only in your browser — no login."
         icon={<Users className="h-8 w-8 text-primary" />}
       />
 
-      {/* Actions */}
-      <Card className="p-4 shadow-sm">
-        <XStack gap={12} className="flex-wrap">
-          <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <UserPlus className="mr-2 h-4 w-4" />
-                Buat Profile
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Buat Profile Baru</DialogTitle>
-              </DialogHeader>
-              <YStack gap={16}>
-                <YStack gap={8}>
-                  <Label>Nama profile (mis. akun utama)</Label>
-                  <Input
-                    value={newName}
-                    onChange={(e) => setNewName(e.target.value)}
-                    placeholder="Akun Utama"
-                    autoFocus
-                  />
-                </YStack>
-                <YStack gap={8}>
-                  <Label>Catatan (opsional)</Label>
-                  <Textarea
-                    value={newNote}
-                    onChange={(e) => setNewNote(e.target.value)}
-                    rows={2}
-                    placeholder="Contoh: akun sejak versi 1.0"
-                  />
-                </YStack>
-                <Button className="w-full" onClick={handleCreate}>
-                  Simpan
-                </Button>
-              </YStack>
-            </DialogContent>
-          </Dialog>
+      <ProfileActionsBar
+        pendingAction={pendingAction}
+        onCreateOpen={() => {
+          setCreateEpoch((e) => e + 1);
+          setCreateOpen(true);
+        }}
+        onCreateDemo={() => void handleCreateDemo()}
+        onImportFile={handleImportFile}
+        onExportAll={() => void handleExportAll()}
+      />
 
-          <Button variant="outline" onClick={handleCreateDemo} disabled={isBusy}>
-            {isBusy ? (
-              <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Database className="mr-2 h-4 w-4" />
-            )}
-            Buat Profile Demo
-          </Button>
-
-          <Spacer />
-
-          <Button
-            variant="outline"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isBusy}
-          >
-            <Upload className="mr-2 h-4 w-4" />
-            Import Backup
-          </Button>
-          <Input
-            ref={fileInputRef}
-            type="file"
-            accept="application/json,.json"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) void handleImportFile(file);
-            }}
-          />
-          <Button variant="outline" onClick={handleExportAll}>
-            <Download className="mr-2 h-4 w-4" />
-            Export Semua
-          </Button>
-        </XStack>
-      </Card>
-
-      {/* Profile list */}
       <Grid gap={16} md={2} lg={3}>
         {profiles.map((profile) => (
           <ProfileCard
             key={profile.id}
             profile={profile}
             isActive={activeProfile?.id === profile.id}
-            onSetActive={() => void setActive(profile.id)}
+            onSetActive={() =>
+              void setActive(profile.id).catch((error) => toast.error(error.message))
+            }
             onRename={() =>
               setEditing({ id: profile.id, name: profile.name, note: profile.note ?? "" })
             }
             onExport={() => void handleExportProfile(profile.id, profile.name)}
-            onDelete={() => void handleDelete(profile.id, profile.name)}
+            onArchive={() => setArchiving({ id: profile.id, name: profile.name })}
+            onRestore={() => undefined}
+            isArchived={false}
           />
         ))}
         {profiles.length === 0 && (
@@ -235,7 +196,7 @@ export function ProfilesPage() {
             <Empty className="border-0 p-0 text-center">
               <EmptyContent>
                 <Text variant="muted">
-                  Belum ada profile. Buat profile pertama untuk mulai mengarsipkan summon.
+                  No profiles yet. Create your first profile to start archiving summons.
                 </Text>
               </EmptyContent>
             </Empty>
@@ -243,36 +204,49 @@ export function ProfilesPage() {
         )}
       </Grid>
 
-      {/* Rename dialog */}
-      <Dialog open={!!editing} onOpenChange={(open) => !open && setEditing(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Ubah Profile</DialogTitle>
-          </DialogHeader>
-          {editing && (
-            <YStack gap={16}>
-              <YStack gap={8}>
-                <Label>Nama profile</Label>
-                <Input
-                  value={editing.name}
-                  onChange={(e) => setEditing({ ...editing, name: e.target.value })}
-                />
-              </YStack>
-              <YStack gap={8}>
-                <Label>Catatan (opsional)</Label>
-                <Textarea
-                  rows={2}
-                  value={editing.note}
-                  onChange={(e) => setEditing({ ...editing, note: e.target.value })}
-                />
-              </YStack>
-              <Button className="w-full" onClick={handleSaveEdit}>
-                Simpan
-              </Button>
-            </YStack>
-          )}
-        </DialogContent>
-      </Dialog>
+      {archivedProfiles.length > 0 && (
+        <Section gap={16}>
+          <Heading level={2}>Archived Profiles</Heading>
+          <Grid gap={16} md={2} lg={3}>
+            {archivedProfiles.map((profile) => (
+              <ProfileCard
+                key={profile.id}
+                profile={profile}
+                isActive={false}
+                isArchived
+                onSetActive={() => undefined}
+                onRename={() => undefined}
+                onExport={() => void handleExportProfile(profile.id, profile.name)}
+                onArchive={() => undefined}
+                onRestore={() => void handleRestore(profile.id)}
+              />
+            ))}
+          </Grid>
+        </Section>
+      )}
+
+      <CreateProfileDialog
+        key={createEpoch}
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        onSubmit={handleCreate}
+      />
+
+      <EditProfileDialog
+        key={editing?.id ?? "none"}
+        editing={editing}
+        onClose={() => setEditing(null)}
+        onSubmit={handleSaveEdit}
+      />
+
+      <ArchiveProfileDialog
+        profileName={archiving?.name ?? null}
+        onClose={() => setArchiving(null)}
+        onConfirm={() => {
+          if (archiving) void handleArchive(archiving.id);
+          setArchiving(null);
+        }}
+      />
     </YStack>
   );
 }

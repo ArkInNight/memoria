@@ -1,8 +1,8 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-type Gap = number | string
+type Gap = number | string;
 
 function Stack({
   gap = 24,
@@ -11,8 +11,8 @@ function Stack({
   style,
   ...props
 }: React.ComponentProps<"div"> & {
-  gap?: Gap
-  direction?: "vertical" | "horizontal"
+  gap?: Gap;
+  direction?: "vertical" | "horizontal";
 }) {
   return (
     <div
@@ -25,25 +25,19 @@ function Stack({
       style={{ gap, ...style }}
       {...props}
     />
-  )
+  );
 }
 
-function XStack({
-  gap = 16,
-  ...props
-}: React.ComponentProps<"div"> & { gap?: Gap }) {
-  return <Stack direction="horizontal" gap={gap} {...props} />
+function XStack({ gap = 16, ...props }: React.ComponentProps<"div"> & { gap?: Gap }) {
+  return <Stack direction="horizontal" gap={gap} {...props} />;
 }
 
-function YStack({
-  gap = 16,
-  ...props
-}: React.ComponentProps<"div"> & { gap?: Gap }) {
-  return <Stack direction="vertical" gap={gap} {...props} />
+function YStack({ gap = 16, ...props }: React.ComponentProps<"div"> & { gap?: Gap }) {
+  return <Stack direction="vertical" gap={gap} {...props} />;
 }
 
 function Spacer({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="spacer" className={cn("flex-1", className)} {...props} />
+  return <div data-slot="spacer" className={cn("flex-1", className)} {...props} />;
 }
 
-export { Stack, XStack, YStack, Spacer }
+export { Stack, XStack, YStack, Spacer };

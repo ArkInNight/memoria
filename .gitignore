@@ -69,3 +69,12 @@ dist-ssr
 
 # browser test artifacts
 .playwright-mcp
+
+.tanstack
+.opencode
+docs
+graphify-out
+raw
+tools
+AGENTS.md
+skills*

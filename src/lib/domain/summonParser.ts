@@ -1,5 +1,5 @@
 import type { PullRecord, Character, Banner } from "@/lib/shared";
-import { CHARACTERS, BANNERS } from "./assets";
+import { CHARACTERS, BANNERS, findRun } from "./assets";
 
 export interface RawPull {
   summonType: string;
@@ -7,11 +7,6 @@ export interface RawPull {
   poolName: string;
   poolType: number;
   gainIds: number[];
-}
-
-/** Normalize a CN pool name so rerun suffixes don't break matching (e.g. '湖的涟漪 16' -> '湖的涟漪'). */
-function normCnName(name: string): string {
-  return name.replace(/\s*\d+$/, "").trim();
 }
 
 export function parseRawPulls(
@@ -28,14 +23,12 @@ export function parseRawPulls(
   const bannerByCnName = new Map<string, Banner>();
   const bannerByName = new Map<string, Banner>();
   for (const b of BANNERS) {
-    if (b.nameCN) bannerByCnName.set(normCnName(b.nameCN), b);
+    if (b.nameCN) bannerByCnName.set(b.nameCN, b);
     bannerByName.set(b.name, b);
   }
 
   const resolveBannerName = (poolName: string): string =>
-    bannerByCnName.get(normCnName(poolName))?.name ??
-    bannerByName.get(poolName)?.name ??
-    poolName;
+    bannerByCnName.get(poolName)?.name ?? poolName;
 
   const result: Omit<PullRecord, "pity" | "rateOn" | "guaranteed">[] = [];
 
@@ -55,10 +48,12 @@ export function parseRawPulls(
       const type = "character" as const; // currently only characters
 
       const id = `${raw.createTime}-${gainId}-${idx}`;
+      const poolName = resolveBannerName(raw.poolName);
 
       result.push({
         id,
-        poolName: resolveBannerName(raw.poolName),
+        poolName,
+        poolRunId: findRun(poolName, raw.createTime)?.runId,
         poolType: raw.poolType,
         summonType: isMulti ? "10" : "1",
         gainId,

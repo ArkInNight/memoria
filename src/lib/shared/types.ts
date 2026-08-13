@@ -1,13 +1,13 @@
 export type Rarity = 2 | 3 | 4 | 5 | 6;
 
-export type EntityType = 'character' | 'psychube';
+export type EntityType = "character" | "psychube";
 
 export interface Character {
   id: number;
   name: string;
   rarity: Rarity;
   attribute: string;
-  type: 'character';
+  type: "character";
   imageUrl?: string;
   nameCN?: string;
   damage?: string;
@@ -18,59 +18,61 @@ export interface Psychube {
   id: number;
   name: string;
   rarity: Rarity;
-  type: 'psychube';
+  type: "psychube";
   imageUrl?: string;
 }
 
 export type BannerType =
-  | 'debut'
-  | 'rerun'
-  | 'exclusive'
-  | 'collaboration'
-  | 'ripples'
-  | 'lake-promise'
-  | 'lake-revelation'
-  | 'lake-gift'
-  | 'lake-invitation'
-  | 'lake-vow'
-  | 'snow'
-  | 'yearning'
-  | 'beginner'
-  | 'standard';
+  | "debut"
+  | "rerun"
+  | "exclusive"
+  | "collaboration"
+  | "ripples"
+  | "promise"
+  | "revelation"
+  | "boon"
+  | "invitation"
+  | "covenant"
+  | "snow"
+  | "yearning"
+  | "beginner"
+  | "standard";
 
 export type PityPool =
-  | 'character'
-  | 'ripples'
-  | 'lake-promise'
-  | 'lake-revelation'
-  | 'lake-gift'
-  | 'lake-invitation'
-  | 'lake-vow'
-  | 'snow'
-  | 'yearning'
-  | 'exclusive'
-  | 'collaboration'
-  | 'beginner'
-  | 'standard';
+  | "character"
+  | "exclusive"
+  | "collaboration"
+  | "ripples"
+  | "promise"
+  | "revelation"
+  | "boon"
+  | "invitation"
+  | "covenant"
+  | "snow"
+  | "yearning"
+  | "beginner"
+  | "standard";
 
-export type RateUpRule = '5050' | '7030' | '100-first' | '100' | 'none' | 'box';
+/**
+ * Rate-up kinds the pity engine implements. Other in-game rate-up mechanics
+ * (7030, selector boxes, pull caps, milestone copies) are documented in
+ * docs/summon-mechanic.md but not yet implemented; they run through the
+ * generic rate-up path and must not be configured here.
+ */
+export type RateUpRule = "5050" | "100-first" | "100" | "none";
 
 /** Mechanics for one banner type; the catalog (assets/banner-rules.json) is the default source. */
 export interface BannerRule {
   pityPool?: PityPool;
   carryOver?: boolean;
   rateUp?: RateUpRule;
-  selector?: number;
-  pullCap?: number;
-  milestoneCopies?: number[];
-  hardPity?: number;
 }
 
 /** Defaults per banner type, overridable per record via Banner's optional fields. */
 export type BannerRuleMap = Partial<Record<BannerType, BannerRule>>;
 
 export interface Banner {
-  id?: string; // slug of the run name (parallel to Character.id)
+  runId?: string; // unique run key: `${slug(name)}--${startDate}`
   name: string; // primary identifier (English name, from the EN wiki)
   nameCN?: string | null;
   type: BannerType;
@@ -78,10 +80,6 @@ export interface Banner {
   pityPool?: PityPool; // optional override (otherwise default from banner-rules.json)
   carryOver?: boolean; // optional override
   rateUp?: RateUpRule; // optional override
-  selector?: number; // optional override
-  pullCap?: number; // optional override
-  milestoneCopies?: number[]; // optional override
-  hardPity?: number; // optional override
   startDate: string | null;
   endDate: string | null;
   rateUp6Star: string[]; // English character names
@@ -92,8 +90,9 @@ export interface Banner {
 export interface PullRecord {
   id: string; // generated: e.g. `${createTime}-${gainId}-${idx}`
   poolName: string; // banner English name (primary)
+  poolRunId?: string; // resolved run key (see bannerRuns.ts)
   poolType: number;
-  summonType: '1' | '10';
+  summonType: "1" | "10";
   gainId?: number; // metadata
   name: string; // character English name (primary)
   rarity: number;
@@ -119,21 +118,7 @@ export interface Profile {
   name: string;
   note?: string;
   createdAt: string;
-}
-
-export interface DashboardStats {
-  totalSummons: number;
-  currentPity: number;
-  currentGuarantee: boolean;
-  total6Star: number;
-  total5Star: number;
-  total4Star: number;
-  lastImportTime: string | null;
-}
-
-export interface ImportPayload {
-  url?: string;
-  json?: string;
+  archivedAt?: string;
 }
 
 export interface ImportResult {
@@ -147,6 +132,7 @@ export interface BannerStats {
   name: string;
   type: BannerType;
   totalPulls: number;
+  total4Star: number;
   avgPity6Star: number;
   highestPity6Star: number;
   lowestPity6Star: number;

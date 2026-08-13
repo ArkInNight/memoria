@@ -17,7 +17,7 @@ function PageHeader({
       <YStack gap={4} className="min-w-0">
         <XStack gap={8} className="flex-wrap">
           {icon}
-          <Heading level={2}>{title}</Heading>
+          <Heading level={1}>{title}</Heading>
         </XStack>
         {description && <Text variant="muted">{description}</Text>}
       </YStack>

@@ -1,43 +1,55 @@
 import { Link, useParams } from "@tanstack/react-router";
 import { useMemo } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ArrowLeft, UserPlus } from "lucide-react";
+
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ArrowLeft, Sparkles, Star, Trophy, UserPlus } from "lucide-react";
-import { slugify } from "@/lib/shared";
+import { StatsOverview } from "@/components/stats-overview";
+import type { StatRow } from "@/components/stats-overview";
 import { EntityImage } from "@/components/ui/entity-image";
-import { CHARACTERS, getAggregatedBanners } from "@/lib/domain/assets";
-import { computeBannerStats } from "@/lib/domain/stats";
-import { useActiveProfile } from "@/lib/store/profiles";
-import { usePullRecords } from "@/lib/store/summons";
 import { YStack, XStack } from "@/components/layout/stack";
 import { Grid } from "@/components/layout/grid";
 import { Heading, Text } from "@/components/typography";
-import { StatCard } from "@/components/stat-card";
 import { EmptyState } from "@/components/empty-state";
-import { Empty, EmptyContent } from "@/components/ui/empty";
+import { formatDate, formatNumber, nowString, RARITY_STYLE } from "@/lib/shared";
+import { getBannerByRunId, characterImageUrl, runForPull } from "@/lib/domain/assets";
+import { computeBannerStats, computeTrackerStats } from "@/lib/domain/stats";
+import { useActiveProfile } from "@/lib/store/profiles";
+import { usePullRecords } from "@/lib/store/summons";
+import { useSummonHistory } from "@/components/history/use-summon-history";
+import { SummonHistorySection } from "@/components/history/summon-history-section";
+import { RarityPieChart } from "@/components/rarity-pie-chart";
+import { Recent6StarSection } from "@/components/recent-6star-section";
+import { ShareButton } from "@/features/share/components/share-button";
+import { heroOptionsFromPulls, SHARE_COLORS } from "@/features/share/lib/share-card-data";
+import type { ShareStatItem } from "@/features/share/lib/share-card-data";
 import { BannerTypeBadge } from "../components/banner-type-badge";
+import { RateUpBadgeList } from "../components/rate-up-badge-list";
+
+function InfoItem({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="flex min-w-0 flex-col gap-1">
+      <Text size="xs" variant="muted" weight="medium" className="truncate uppercase tracking-wide">
+        {label}
+      </Text>
+      <Text weight="semibold" className="truncate">
+        {value}
+      </Text>
+    </div>
+  );
+}
 
 export function BannerDetailPage() {
   const { bannerId } = useParams({ from: "/banners/$bannerId" });
 
+  const banner = useMemo(() => getBannerByRunId(bannerId), [bannerId]);
+
   const profile = useActiveProfile();
   const pulls = usePullRecords(profile?.id);
-
-  const banner = useMemo(
-    () => getAggregatedBanners().find((b) => slugify(b.name) === bannerId),
-    [bannerId]
-  );
+  const history = useSummonHistory(banner?.runId);
 
   const bannerPulls = useMemo(
-    () => (banner ? pulls.filter((p) => p.poolName === banner.name) : []),
+    () => (banner ? pulls.filter((p) => runForPull(p)?.runId === banner.runId) : []),
     [pulls, banner]
   );
 
@@ -46,193 +58,167 @@ export function BannerDetailPage() {
     [banner, bannerPulls]
   );
 
-  const getCharImage = (name: string) =>
-    CHARACTERS.find((c) => c.name === name)?.imageUrl;
+  const rows = useMemo<StatRow[]>(() => {
+    if (!stats) return [];
+    return [
+      { label: "Total Pulls", value: stats.totalPulls },
+      {
+        label: "6★",
+        value: stats.obtained6Star.length,
+        valueClassName: RARITY_STYLE[6].text,
+      },
+      {
+        label: "5★",
+        value: stats.obtained5Star.length,
+        valueClassName: RARITY_STYLE[5].text,
+      },
+      {
+        label: "4★",
+        value: stats.total4Star,
+        valueClassName: RARITY_STYLE[4].text,
+      },
+      {
+        label: "Average Pity",
+        value: stats.avgPity6Star > 0 ? stats.avgPity6Star : "-",
+      },
+      {
+        label: "Highest Pity",
+        value: stats.highestPity6Star > 0 ? stats.highestPity6Star : "-",
+      },
+      {
+        label: "Lowest Pity",
+        value: stats.lowestPity6Star > 0 ? stats.lowestPity6Star : "-",
+        valueClassName: "text-success",
+      },
+    ];
+  }, [stats]);
+
+  const rarityDist = useMemo(
+    () => (banner ? computeTrackerStats(bannerPulls).rarityDist : []),
+    [banner, bannerPulls]
+  );
+
+  const bannerShareStats = useMemo<ShareStatItem[]>(() => {
+    if (!stats) return [];
+    return [
+      { label: "Total Pulls", value: formatNumber(stats.totalPulls), color: SHARE_COLORS.white },
+      { label: "6★", value: formatNumber(stats.obtained6Star.length), color: SHARE_COLORS.gold },
+      { label: "5★", value: formatNumber(stats.obtained5Star.length), color: SHARE_COLORS.purple },
+      { label: "4★", value: formatNumber(stats.total4Star), color: SHARE_COLORS.sky },
+      {
+        label: "Avg Pity",
+        value: stats.avgPity6Star > 0 ? String(stats.avgPity6Star) : "—",
+        color: SHARE_COLORS.emerald,
+      },
+    ];
+  }, [stats]);
 
   return (
     <YStack gap={24}>
-      {/* Back Button & Header */}
       <YStack gap={16}>
-        <Button asChild variant="outline" size="sm" className="w-fit">
-          <Link to="/banners">
-            <ArrowLeft size={16} className="mr-2" />
-            Back to Archive
-          </Link>
-        </Button>
+        <XStack gap={12} className="justify-between">
+          <Button asChild variant="outline" size="sm" className="w-fit">
+            <Link to="/banners">
+              <ArrowLeft size={16} className="mr-2" />
+              Back to Archive
+            </Link>
+          </Button>
+          {banner && profile && bannerPulls.length > 0 && (
+            <ShareButton
+              data={{
+                profileName: profile.name || "Player",
+                generatedAt: formatDate(nowString()) || "",
+                heading: {
+                  title: banner.name,
+                  subtitle: banner.type,
+                },
+                stats: bannerShareStats,
+              }}
+              heroes={heroOptionsFromPulls(bannerPulls)}
+              pulls={bannerPulls}
+              filename={banner.name}
+            />
+          )}
+        </XStack>
 
         {banner ? (
           <YStack gap={4}>
             <XStack gap={12}>
-              <Heading level={2}>{banner.name}</Heading>
+              <Heading level={1}>{banner.name}</Heading>
               <BannerTypeBadge type={banner.type} className="text-xs capitalize" />
             </XStack>
             <Text variant="muted">Detailed statistics and pull details.</Text>
           </YStack>
         ) : (
-          <Heading level={2}>Banner not found</Heading>
+          <Heading level={1}>Banner not found</Heading>
         )}
       </YStack>
 
       {!banner ? (
-        <Card className="p-12">
-          <Empty className="border-0 p-0 text-center">
-            <EmptyContent>
-              <Text variant="destructive">Banner not found.</Text>
-            </EmptyContent>
-          </Empty>
-        </Card>
+        <EmptyState title="Banner not found" />
       ) : !profile ? (
         <EmptyState
           icon={<UserPlus className="h-7 w-7 text-primary" />}
-          title="Belum ada profile"
-          description="Statistik banner dihitung dari data summon profile kamu. Buat profile dulu untuk melihat data pull di banner ini."
+          title="No profile yet"
+          description="Banner statistics are computed from your profile's summon data. Create a profile first to see pulls on this banner."
           action={
             <Button asChild>
-              <Link to="/profiles">Buat Profile</Link>
+              <Link to="/profiles">Create Profile</Link>
             </Button>
           }
         />
-      ) : stats ? (
-        <YStack gap={32}>
-          {/* Banner Image */}
-          <EntityImage
-            variant="banner"
-            name={banner.name}
-            imageUrl={banner.imageUrl ?? undefined}
-            className="aspect-[16/5] w-full rounded-2xl"
-          />
-
-          {/* Stats Boxes */}
-          <Grid cols={1} md={2} lg={4}>
-            <StatCard
-              label="Total Pulls"
-              icon={<Trophy className="text-muted-foreground h-4 w-4" />}
-              value={stats.totalPulls}
-              hint="Summons in this banner"
+      ) : (
+        <YStack gap={24}>
+          <div className="grid grid-cols-1 gap-6 items-start lg:grid-cols-5">
+            <EntityImage
+              variant="banner"
+              name={banner.name}
+              imageUrl={banner.imageUrl ?? undefined}
+              className="aspect-21/9 w-full rounded-xl lg:col-span-2"
             />
 
-            <StatCard
-              label="Average 6★ Pity"
-              icon={<Sparkles className="text-yellow-500 h-4 w-4" />}
-              value={stats.avgPity6Star > 0 ? stats.avgPity6Star : "-"}
-              valueClassName="text-yellow-500"
-              hint={`Across ${stats.obtained6Star.length} six-stars`}
-            />
+            <Card className="p-4 shadow-sm sm:p-6 lg:col-span-3">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <InfoItem
+                  label="Type"
+                  value={<BannerTypeBadge type={banner.type} className="text-xs capitalize" />}
+                />
+                <InfoItem label="Version" value={banner.version ?? "—"} />
+                <InfoItem label="Start Date" value={formatDate(banner.startDate) || "—"} />
+                <InfoItem
+                  label="End Date"
+                  value={banner.endDate === null ? "Permanent" : formatDate(banner.endDate) || "—"}
+                />
+              </div>
 
-            <StatCard
-              label="Highest Pity"
-              icon={<Star className="text-muted-foreground h-4 w-4" />}
-              value={stats.highestPity6Star > 0 ? stats.highestPity6Star : "-"}
-              hint="Most pulls to get a 6★"
-            />
-
-            <StatCard
-              label="Lowest Pity"
-              icon={<Star className="text-muted-foreground h-4 w-4" />}
-              value={stats.lowestPity6Star > 0 ? stats.lowestPity6Star : "-"}
-              valueClassName="text-emerald-500"
-              hint="Fewest pulls to get a 6★"
-            />
-          </Grid>
-
-          {/* Obtained Characters section */}
-          <Grid md={2}>
-            {/* 6-star pulls */}
-            <Card className="shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg font-bold flex items-center gap-2">
-                  <Star className="text-yellow-500 fill-yellow-500 h-5 w-5" />
-                  Obtained 6★ Characters ({stats.obtained6Star.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {stats.obtained6Star.length > 0 ? (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="w-10"></TableHead>
-                        <TableHead>Character</TableHead>
-                        <TableHead className="text-center">Pity</TableHead>
-                        <TableHead>Time</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {stats.obtained6Star.map((p, i) => (
-                        <TableRow key={i}>
-                          <TableCell>
-                            <EntityImage name={p.name} imageUrl={getCharImage(p.name)} rarity={6} className="h-9 w-9 rounded-full" />
-                          </TableCell>
-                          <TableCell className="font-semibold text-yellow-500">{p.name}</TableCell>
-                          <TableCell className="text-center font-mono font-bold">{p.pity}</TableCell>
-                          <TableCell className="text-muted-foreground text-xs whitespace-nowrap">
-                            {p.createTime.split(".")[0]}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                ) : (
-                  <Empty className="border-0 p-8">
-                    <EmptyContent>
-                      <Text size="sm" variant="muted">
-                        No 6★ characters obtained on this banner.
-                      </Text>
-                    </EmptyContent>
-                  </Empty>
-                )}
-              </CardContent>
+              {(banner.rateUp6Star?.length || banner.rateUp5Star?.length) && (
+                <YStack gap={16} className="mt-6 border-t border-border pt-4">
+                  <RateUpBadgeList
+                    names={banner.rateUp6Star ?? []}
+                    rarity={6}
+                    imageUrlOf={characterImageUrl}
+                  />
+                  <RateUpBadgeList
+                    names={banner.rateUp5Star ?? []}
+                    rarity={5}
+                    imageUrlOf={characterImageUrl}
+                  />
+                </YStack>
+              )}
             </Card>
+          </div>
 
-            {/* 5-star pulls */}
-            <Card className="shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg font-bold flex items-center gap-2">
-                  <Star className="text-purple-500 fill-purple-500 h-5 w-5" />
-                  Obtained 5★ Characters ({stats.obtained5Star.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {stats.obtained5Star.length > 0 ? (
-                  <YStack gap={0} className="max-h-[400px] overflow-y-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-10"></TableHead>
-                          <TableHead>Character</TableHead>
-                          <TableHead className="text-center">Pity</TableHead>
-                          <TableHead>Time</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {stats.obtained5Star.map((p, i) => (
-                          <TableRow key={i}>
-                            <TableCell>
-                              <EntityImage name={p.name} imageUrl={getCharImage(p.name)} rarity={5} className="h-9 w-9 rounded-full" />
-                            </TableCell>
-                            <TableCell className="font-semibold text-purple-500">{p.name}</TableCell>
-                            <TableCell className="text-center font-mono font-bold">{p.pity}</TableCell>
-                            <TableCell className="text-muted-foreground text-xs whitespace-nowrap">
-                              {p.createTime.split(".")[0]}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </YStack>
-                ) : (
-                  <Empty className="border-0 p-8">
-                    <EmptyContent>
-                      <Text size="sm" variant="muted">
-                        No 5★ characters obtained on this banner.
-                      </Text>
-                    </EmptyContent>
-                  </Empty>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
+          {rows.length > 0 && (
+            <Grid lg={3} gap={24}>
+              <StatsOverview rows={rows} />
+              <RarityPieChart data={rarityDist} />
+              <Recent6StarSection pulls={bannerPulls} charImageByName={history.charImageByName} />
+            </Grid>
+          )}
+
+          <SummonHistorySection history={history} />
         </YStack>
-      ) : null}
+      )}
     </YStack>
   );
 }

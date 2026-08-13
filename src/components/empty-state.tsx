@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import {
   Empty,
+  EmptyHeader,
   EmptyMedia,
   EmptyContent,
   EmptyTitle,
@@ -29,13 +30,11 @@ function EmptyState({
             {icon}
           </EmptyMedia>
         )}
-        <EmptyContent>
+        <EmptyHeader>
           <EmptyTitle className="text-lg font-semibold">{title}</EmptyTitle>
-          {description && (
-            <EmptyDescription className="max-w-md">{description}</EmptyDescription>
-          )}
-          {action}
-        </EmptyContent>
+          {description && <EmptyDescription className="max-w-md">{description}</EmptyDescription>}
+        </EmptyHeader>
+        <EmptyContent>{action}</EmptyContent>
       </Empty>
     </Card>
   );

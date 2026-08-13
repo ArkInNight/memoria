@@ -15,7 +15,7 @@ export function useSummons(profileId: string | null | undefined): StoredSummon[]
 
 /** Summons of a profile as plain PullRecord values (booleans already stored as booleans). */
 export function usePullRecords(profileId: string | null | undefined): PullRecord[] {
-  return useSummons(profileId) as PullRecord[];
+  return useSummons(profileId);
 }
 
 export async function getSummons(profileId: string): Promise<StoredSummon[]> {

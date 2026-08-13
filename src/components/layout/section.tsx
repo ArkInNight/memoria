@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 function Section({
   gap = 24,
@@ -15,7 +15,7 @@ function Section({
       style={{ gap, ...style }}
       {...props}
     />
-  )
+  );
 }
 
-export { Section }
+export { Section };
