@@ -53,7 +53,7 @@ export function UrlImportTab({ profile }: { profile: Profile }) {
           <FieldLabel htmlFor="summon-url">Link Grabber URL</FieldLabel>
           <Input
             id="summon-url"
-            placeholder="https://reverse1999-game-api.com/querySummon?..."
+            placeholder="https://game-re-en-service.sl916.com/query/summon?..."
             value={url}
             onChange={(event) => setUrl(event.target.value)}
             disabled={isPending}

@@ -4,7 +4,10 @@ import { isIP } from "node:net";
 const MAX_BODY = 1024 * 10;
 const MAX_REDIRECTS = 3;
 const REQUEST_TIMEOUT_MS = 8000;
-const DEFAULT_ALLOWED_HOSTS = ["reverse1999-game-api.com"];
+const DEFAULT_ALLOWED_HOSTS = [
+  "reverse1999-game-api.com",
+  "game-re-en-service.sl916.com",
+];
 
 const ALLOWED_HOSTS = new Set(
   (process.env.PROXY_ALLOWED_HOSTS?.split(",") ?? DEFAULT_ALLOWED_HOSTS)
@@ -91,11 +94,7 @@ async function fetchUpstream(initialTarget: URL, signal: AbortSignal): Promise<R
   throw new Error("Too many upstream redirects");
 }
 
-export async function handler(req: Request): Promise<Response> {
-  if (req.method !== "POST") {
-    return Response.json({ error: "Method not allowed" }, { status: 405 });
-  }
-
+export async function POST(req: Request): Promise<Response> {
   let body: { url?: string };
   try {
     body = (await req.json()) as { url?: string };
@@ -138,6 +137,21 @@ export async function handler(req: Request): Promise<Response> {
     }
 
     const text = new TextDecoder().decode(raw);
+    try {
+      const payload = JSON.parse(text) as { code?: number; msg?: string };
+      if (payload.code === -6) {
+        return Response.json(
+          {
+            error:
+              "This summon link has expired or no longer has permission. Generate a new link from the game.",
+          },
+          { status: 403 }
+        );
+      }
+    } catch {
+      // Let the importer report the invalid upstream response.
+    }
+
     return new Response(text, {
       status: 200,
       headers: {
@@ -160,5 +174,3 @@ export async function handler(req: Request): Promise<Response> {
     clearTimeout(timer);
   }
 }
-
-export default handler;
