@@ -22,22 +22,29 @@ function HeroSplash({
   focalPoint?: { x: number; y: number };
 }) {
   const [broken, setBroken] = useState(false);
+  const x = focalPoint?.x ?? 0.5;
+  const y = focalPoint?.y ?? 0.38;
+  const translateX = (0.5 - x) * 32;
+  const translateY = (0.38 - y) * 32;
 
   if (!hero || broken) return null;
   return (
-    <img
-      src={splashFrameOf(hero.name).src}
-      alt=""
-      onError={() => setBroken(true)}
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-        objectPosition: `${(focalPoint?.x ?? 0.5) * 100}% ${(focalPoint?.y ?? 0.18) * 100}%`,
-      }}
-    />
+    <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+      <img
+        src={splashFrameOf(hero.name).src}
+        alt=""
+        onError={() => setBroken(true)}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "82%",
+          objectFit: "contain",
+          objectPosition: "center top",
+          transform: `translate(${translateX}%, ${translateY}%)`,
+        }}
+      />
+    </div>
   );
 }
 
