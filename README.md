@@ -33,3 +33,18 @@ bun run format
 ## Tech Stack
 
 React, TypeScript, Vite, Tailwind CSS, TanStack Router, Dexie, and shadcn/ui.
+
+## Sources and Inspiration
+
+Game and banner data references:
+
+- [Prydwen — Reverse: 1999 CN Banner History](https://www.prydwen.gg/re1999/guides/banner-history-cn)
+- [Reverse: 1999 Wiki (English)](https://reverse1999.fandom.com/wiki/Reverse:_1999_Wiki)
+- [Reverse: 1999 Wiki (Chinese)](https://res1999.huijiwiki.com/wiki/%E9%A6%96%E9%A1%B5)
+
+Project inspiration:
+
+- [Timekeeper](https://timekeeper.top/)
+- [Kornblume](https://windbow27.github.io/kornblume/)
+
+The source code for Memoria is available on [GitHub](https://github.com/ArkInNight/memoria).

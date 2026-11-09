@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
-import { rarityStyle } from "@/lib/shared";
+import { rarityStyle, type Rarity } from "@/shared";
 
 interface EntityImageProps {
   name: string;
   imageUrl?: string;
-  rarity?: number;
+  rarity?: Rarity;
   variant?: "portrait" | "banner";
   className?: string;
 }

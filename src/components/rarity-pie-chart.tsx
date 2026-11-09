@@ -9,17 +9,17 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { RARITY_ORDER, rarityStyle } from "@/lib/shared";
+import { RARITY_ORDER, rarityStyle, type Rarity } from "@/shared";
 import { Empty, EmptyDescription, EmptyHeader } from "@/components/ui/empty";
 
 interface Slice {
-  rarity: number;
+  rarity: Rarity;
   name: string;
   value: number;
   fill: string;
 }
 
-function RarityPieChart({ data }: { data: { rarity: number; count: number }[] }) {
+function RarityPieChart({ data }: { data: { rarity: Rarity; count: number }[] }) {
   const slices: Slice[] = RARITY_ORDER.reduce<Slice[]>((result, rarity) => {
     const item = data.find((d) => d.rarity === rarity);
 

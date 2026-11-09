@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useActiveProfile, useProfiles, setActive } from "@/lib/store/profiles";
+import { profileStore } from "@/stores/profile-store";
 import { Button } from "../ui/button";
 
 const NAV_ITEMS = [
@@ -49,8 +49,8 @@ function NavLink({
 }
 
 function TopNav({ darkMode, onToggleTheme }: { darkMode: boolean; onToggleTheme: () => void }) {
-  const profiles = useProfiles();
-  const activeProfile = useActiveProfile();
+  const profiles = profileStore.useProfiles();
+  const activeProfile = profileStore.useActiveProfile();
 
   return (
     <header className="relative z-10 grid shrink-0 grid-cols-[1fr_auto_auto] items-center gap-x-2 gap-y-1 border-b border-sidebar-border bg-sidebar px-3 py-2 sm:flex sm:h-16 sm:gap-4 sm:px-6 sm:py-0">
@@ -67,7 +67,10 @@ function TopNav({ darkMode, onToggleTheme }: { darkMode: boolean; onToggleTheme:
         ))}
       </nav>
 
-      <Select value={activeProfile?.id ?? ""} onValueChange={(value) => void setActive(value)}>
+      <Select
+        value={activeProfile?.id ?? ""}
+        onValueChange={(value) => void profileStore.setActive(value)}
+      >
         <SelectTrigger aria-label="Active profile" className="w-32 sm:w-44">
           <SelectValue placeholder="Select profile" />
         </SelectTrigger>

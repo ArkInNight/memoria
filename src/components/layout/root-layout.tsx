@@ -5,6 +5,7 @@ import { AppShell, Main } from "@/components/layout/app-shell";
 import { Container } from "@/components/layout/container";
 import { BackgroundArt } from "@/components/layout/background-art";
 import { TopNav } from "@/components/layout/top-nav";
+import { AppFooter } from "@/components/layout/app-footer";
 
 export function RootLayout() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -37,6 +38,7 @@ export function RootLayout() {
         <Container>
           <Outlet />
         </Container>
+        <AppFooter />
       </Main>
 
       <Toaster position="top-right" closeButton />
