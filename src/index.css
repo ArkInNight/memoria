@@ -71,7 +71,7 @@
   --primary-foreground: #fdf4e7;
   --primary-hover: #b05e15;
 
-  /* secondary accent baru — sage/olive dari dedaunan di foto */
+  /* secondary accent — sage/olive */
   --secondary-accent: #5c7a52;
   --secondary-accent-foreground: #f4f0e2;
 
@@ -113,17 +113,17 @@
   --sidebar-border: rgba(144, 75, 16, 0.25);
   --sidebar-ring: #b05e15;
 
-  /* efek glass panel — konsisten di kedua tema, cocok dengan jendela kaca di foto */
+  /* glass panel effect — consistent across both themes */
   --panel-blur: 14px;
 
-  /* scrollbar — netral (abu), bukan warna brand */
+  /* scrollbar — neutral, not brand color */
   --scrollbar-thumb: rgba(70, 70, 70, 0.5);
   --scrollbar-thumb-hover: rgba(45, 45, 45, 0.95);
   --scrollbar-track: rgba(0, 0, 0, 0.05);
 }
 
 .dark {
-  /* bg-base — near-black bergeser teal (selaras foto malam yang berkabut biru) */
+  /* bg-base — near-black shifted to teal */
   --background: #0b1013;
   --foreground: #f2f0ea;
   --card: rgba(19, 21, 27, 0.72);

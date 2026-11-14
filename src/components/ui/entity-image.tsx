@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { cn } from "@/lib/utils";
 import { rarityStyle, type Rarity } from "@/shared";
 
@@ -16,9 +18,17 @@ export function EntityImage({
   variant = "portrait",
   className,
 }: EntityImageProps) {
-  if (imageUrl) {
+  const [hasError, setHasError] = useState(false);
+
+  if (imageUrl && !hasError) {
     return (
-      <img src={imageUrl} alt={name} loading="lazy" className={cn("object-cover", className)} />
+      <img
+        src={imageUrl}
+        alt={name}
+        loading="lazy"
+        onError={() => setHasError(true)}
+        className={cn("object-cover", className)}
+      />
     );
   }
 

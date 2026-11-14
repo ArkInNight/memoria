@@ -7,45 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Big architecture and catalog overhaul (working tree, not yet committed).
-
 ### Added
 
-- Banner catalog extended through Version 3.9 (186 → 199 banners), including
-  the missed 2023 reruns `Swinging Freely 1.1` / `Whisper of the Woods 1.1`
-  and the new `From the Lake's Heart 3.7` edition.
-- CN ↔ EN banner name map entries for every new banner
-  (`src/data/cn-en-banner-name-map.ts`).
-- Banner art from the EN wiki: the seven Version 3.8 editions plus art
-  backfills for `The Myth at Her Fingertips 2.8`, `Ripples on the Water 3.5`,
-  `Yearning of the Water 2.4`, `Swinging Freely 1.1`, and
-  `Whisper of the Woods 1.1`.
-- Characters `Hedone` (3156), `Narcissus` (3157) for Version 3.9, and the
-  upcoming 4.0 CN cast `Drake` (3158), `Glyndŵr` (3159),
-  `Huntsworn Lilya` (3155), with their icons (135 → 138 characters).
-- `tools/update.py` — single-entrypoint data pipeline replacing the legacy
-  multi-file tools: `scrape` (live EN wiki → staged diffs in
-  `tools/output/`), `validate` (catalog invariants + "Not Found" art list),
-  and `apply` (merge into `src/data/*.ts` + copy images, never edits or
-  deletes existing records).
+- Pity Status Hero card at the top of the Dashboard displaying active 6★ pity counter, distance to soft pity (60), guarantee status badge (Guaranteed / 50/50), and Clear Drops cost.
+- Comprehensive step-by-step import tutorial with Marconi Link Grabber one-liner commands (PowerShell & Bash), OS switcher, 1-click command copy, troubleshooting alerts, and screenshot placeholders.
+- Screenshot tutorial placeholder slots under `public/images/tutorial/` with graceful fallback UI.
 
 ### Changed
 
-- Layering refactor: `src/lib` is split into flat feature-adjacent layers —
-  `src/core` (pure calculations), `src/data` (static catalogs), and
-  `src/stores` (UI-facing Dexie/store logic).
-- Banner/character catalogs are hand-maintained TypeScript in
-  `src/data/*.ts` instead of `assets/*.json` built by Python scripts.
-- Banner metadata conventions: uniform `05:00` start / `04:59` end
-  timestamps, and banners starting before a version boundary date count
-  toward the previous version.
-
-### Removed
-
-- The legacy `assets/*.json` catalogs and the retired Python tools
-  (`build_assets.py`, `build_banners.py`, `build_splash_metadata.py`,
-  `scrape_*.py`, `migrate_banners.py`, `apply.py`, `validate_banners.py`,
-  `common.py`, and their alias JSON files).
+- Replaced rigid active banners grid on the Dashboard with a responsive horizontal snap-scroll deck, banner type badges, and image fallback handling.
+- Clarified domain labels across recent 6★ strips and share cards: changed "P{pity}" to "Pity {pity}" to eliminate confusion with character Portray counts.
+- Reorganized Import page layout into a prominent top guide section followed by side-by-side import form and session logs.
 
 ## [0.2.0] - 2026-08-13
 

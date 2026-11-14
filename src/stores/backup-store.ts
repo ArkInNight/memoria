@@ -130,10 +130,10 @@ async function importBackup(text: string): Promise<ImportSummary> {
   try {
     value = JSON.parse(text);
   } catch {
-    throw new Error("File backup bukan JSON yang valid.");
+    throw new Error("Backup file is not valid JSON.");
   }
   if (!isBackupFile(value)) {
-    throw new Error("Bukan file backup Memoria yang valid.");
+    throw new Error("Not a valid Memoria backup file.");
   }
   const parsed = value;
 

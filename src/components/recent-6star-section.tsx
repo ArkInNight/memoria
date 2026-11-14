@@ -28,7 +28,7 @@ function Recent6StarSection({
               <li
                 key={summon.id}
                 title={`${summon.name} · ${summon.poolName} · ${formatDateTime(summon.createTime)}`}
-                className="flex w-12 flex-col items-center gap-1"
+                className="flex w-14 flex-col items-center gap-1 text-center"
               >
                 <EntityImage
                   name={summon.name}
@@ -37,7 +37,7 @@ function Recent6StarSection({
                   className="h-9 w-9 rounded-full"
                 />
                 <span className="text-[10px] font-semibold leading-none text-muted-foreground">
-                  P{summon.pity}
+                  Pity {summon.pity}
                 </span>
               </li>
             ))}

@@ -22,7 +22,7 @@ export function ImportPage() {
     <YStack gap={24}>
       <PageHeader
         title="Import Summons"
-        description="Permanently archive your summon history from the game."
+        description="Permanently archive your summon history from Reverse: 1999."
       />
 
       {!profile ? (
@@ -37,40 +37,42 @@ export function ImportPage() {
           }
         />
       ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
+        <div className="flex flex-col gap-6">
           <ImportInstructions targetProfileName={profile.name} />
 
-          <Card className="md:col-span-1 lg:col-span-2 shadow-sm h-full">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-bold flex items-center gap-1.5">
-                <DownloadCloud size={16} className="text-primary" />
-                Import Data
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="mb-6 grid w-full grid-cols-3">
-                  <TabsTrigger value="url">Link URL</TabsTrigger>
-                  <TabsTrigger value="json">Raw JSON</TabsTrigger>
-                  <TabsTrigger value="manual">Manual Input</TabsTrigger>
-                </TabsList>
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
+            <Card className="shadow-sm lg:col-span-7">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-1.5 text-sm font-bold">
+                  <DownloadCloud size={16} className="text-primary" />
+                  Import Data
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                  <TabsList className="mb-6 grid w-full grid-cols-3">
+                    <TabsTrigger value="url">Link URL</TabsTrigger>
+                    <TabsTrigger value="json">Raw JSON</TabsTrigger>
+                    <TabsTrigger value="manual">Manual Input</TabsTrigger>
+                  </TabsList>
 
-                <TabsContent value="url" forceMount hidden={activeTab !== "url"}>
-                  <UrlImportTab profile={profile} />
-                </TabsContent>
+                  <TabsContent value="url" forceMount hidden={activeTab !== "url"}>
+                    <UrlImportTab profile={profile} />
+                  </TabsContent>
 
-                <TabsContent value="json" forceMount hidden={activeTab !== "json"}>
-                  <JsonImportTab profile={profile} />
-                </TabsContent>
+                  <TabsContent value="json" forceMount hidden={activeTab !== "json"}>
+                    <JsonImportTab profile={profile} />
+                  </TabsContent>
 
-                <TabsContent value="manual" forceMount hidden={activeTab !== "manual"}>
-                  <ManualInputTab profile={profile} />
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
+                  <TabsContent value="manual" forceMount hidden={activeTab !== "manual"}>
+                    <ManualInputTab profile={profile} />
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
 
-          <ImportLogSection className="md:col-span-2 lg:col-span-2" />
+            <ImportLogSection className="lg:col-span-5" />
+          </div>
         </div>
       )}
     </YStack>

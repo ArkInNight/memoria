@@ -5,7 +5,7 @@ import type { Profile } from "@/shared";
 import { extractPageData } from "./extract-page-data";
 import { parseRawSummons } from "./parse-raw-summons";
 import { Button } from "@/components/ui/button";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Form } from "@/components/form";
@@ -59,6 +59,9 @@ export function UrlImportTab({ profile }: { profile: Profile }) {
             disabled={isPending}
             aria-invalid={Boolean(error)}
           />
+          <FieldDescription className="text-xs">
+            Paste the URL copied by Marconi. The authentication token expires in ~5 minutes.
+          </FieldDescription>
         </Field>
       </FieldGroup>
 

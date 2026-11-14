@@ -28,8 +28,8 @@ function BannerRecent6Star({
         {recent.map((summon) => (
           <li
             key={summon.id}
-            title={`${summon.name} · ${summon.poolName} · P${summon.pity}`}
-            className="flex w-8 flex-col items-center gap-0.5"
+            title={`${summon.name} · ${summon.poolName} · Pity ${summon.pity}`}
+            className="flex w-10 flex-col items-center gap-0.5"
           >
             <EntityImage
               name={summon.name}
@@ -37,8 +37,8 @@ function BannerRecent6Star({
               rarity={6}
               className="h-7 w-7 rounded-full"
             />
-            <span className="text-[9px] font-semibold leading-none text-muted-foreground">
-              P{summon.pity}
+            <span className="text-[9px] font-semibold leading-none text-muted-foreground whitespace-nowrap">
+              Pity {summon.pity}
             </span>
           </li>
         ))}

@@ -107,3 +107,73 @@ export function computeBannerStats(banner: Banner, summons: SummonRecord[]): Ban
       })),
   };
 }
+
+export interface PityHeroStatus {
+  currentPity: number;
+  maxPity: number;
+  softPity: number;
+  distanceToSoft: number;
+  guaranteed: boolean | null;
+  pool: string;
+}
+
+/**
+ * Pity and guarantee status for a pool. Reads write-time pity and guarantee
+ * values from the most recent summon record in the pool.
+ */
+export function computePityHeroStatus(
+  summons: SummonRecord[],
+  pool: string,
+  rateUpRule?: string
+): PityHeroStatus {
+  const maxPity = pool === "invitation" ? 40 : pool === "covenant" || pool === "beginner" ? 30 : 70;
+  const softPity = maxPity <= 40 ? maxPity : 60;
+
+  if (summons.length === 0) {
+    const isNoRateUp = rateUpRule === "none" || pool === "standard" || pool === "beginner";
+    return {
+      currentPity: 0,
+      maxPity,
+      softPity,
+      distanceToSoft: softPity,
+      guaranteed: isNoRateUp
+        ? null
+        : rateUpRule === "100" || rateUpRule === "100-first"
+          ? true
+          : false,
+      pool,
+    };
+  }
+
+  const sorted = [...summons].sort((a, b) => a.createTime.localeCompare(b.createTime));
+  const last = sorted[sorted.length - 1]!;
+
+  const currentPity = last.rarity === 6 ? 0 : last.pity;
+  const distanceToSoft = Math.max(0, softPity - currentPity);
+
+  let guaranteed: boolean | null;
+  if (rateUpRule === "none" || pool === "standard" || pool === "beginner") {
+    guaranteed = null;
+  } else if (rateUpRule === "100") {
+    guaranteed = true;
+  } else if (rateUpRule === "100-first") {
+    const has6Star = sorted.some((s) => s.rarity === 6);
+    guaranteed = !has6Star;
+  } else {
+    // 50/50 rule
+    if (last.rarity === 6) {
+      guaranteed = last.rateOn === false;
+    } else {
+      guaranteed = last.guaranteed ?? false;
+    }
+  }
+
+  return {
+    currentPity,
+    maxPity,
+    softPity,
+    distanceToSoft,
+    guaranteed,
+    pool,
+  };
+}

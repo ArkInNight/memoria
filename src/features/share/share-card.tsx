@@ -133,7 +133,11 @@ function Portrait({ name, pity, url }: { name: string; pity: number; url?: strin
       >
         {name}
       </span>
-      <span style={{ fontSize: 15, fontWeight: 800, color: SHARE_COLORS.gold }}>P{pity}</span>
+      <span
+        style={{ fontSize: 14, fontWeight: 800, color: SHARE_COLORS.gold, letterSpacing: -0.2 }}
+      >
+        Pity {pity}
+      </span>
     </div>
   );
 }

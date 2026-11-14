@@ -10,13 +10,14 @@ import { Grid } from "@/components/layout/grid";
 import { PageHeader } from "@/components/page-header";
 import { EmptyState } from "@/components/empty-state";
 import { catalogStore } from "@/stores/catalog-store";
-import { getPityPoolOfSummon } from "@/core/summon-engine";
-import { computeTrackerStats } from "@/core/summon-stats";
+import { getPityPoolForRun, getPityPoolOfSummon, resolveBannerRule } from "@/core/summon-engine";
+import { computeTrackerStats, computePityHeroStatus } from "@/core/summon-stats";
 import type { TrackerStats } from "@/core/summon-stats";
 import { formatNumber, nowString, formatDate, RARITY_STYLE } from "@/shared";
 import { useSummonHistory } from "@/features/history/use-summon-history";
 import { SummonHistorySection } from "@/features/history/summon-history-section";
 import { ActiveBannersSection } from "./active-banners-section";
+import { PityHeroCard } from "./pity-hero-card";
 import { RarityPieChart } from "@/components/rarity-pie-chart";
 import { Recent6StarSection } from "@/components/recent-6star-section";
 import { ShareButton } from "@/features/share/share-button";
@@ -73,6 +74,38 @@ export function DashboardPage() {
 
   const trackerStats = useMemo(() => computeTrackerStats(filteredSummons), [filteredSummons]);
   const rows = useMemo<StatRow[]>(() => buildTrackerRows(trackerStats), [trackerStats]);
+
+  const pityHeroStatus = useMemo(() => {
+    let pool = history.poolFilter;
+    let bannerName: string | undefined;
+    const matchingBanner =
+      pool === "all"
+        ? activeBanners[0]
+        : activeBanners.find((b) => getPityPoolForRun(b, catalogStore.bannerRules) === pool);
+
+    if (pool === "all") {
+      pool = matchingBanner
+        ? getPityPoolForRun(matchingBanner, catalogStore.bannerRules)
+        : "character";
+      bannerName = matchingBanner?.name;
+    } else {
+      bannerName = matchingBanner?.name;
+    }
+
+    const poolSummons = history.allSummons.filter(
+      (p) =>
+        getPityPoolOfSummon(p, catalogStore.getInstanceForSummon, catalogStore.bannerRules) === pool
+    );
+
+    const rule = matchingBanner
+      ? resolveBannerRule(matchingBanner, catalogStore.bannerRules).rateUp
+      : undefined;
+
+    return {
+      status: computePityHeroStatus(poolSummons, pool, rule),
+      bannerName,
+    };
+  }, [history.poolFilter, history.allSummons, activeBanners]);
 
   const shareHeroes = useMemo(() => heroOptionsFromSummons(filteredSummons), [filteredSummons]);
   const shareStats = useMemo(
@@ -141,6 +174,8 @@ export function DashboardPage() {
           />
         </XStack>
       </PageHeader>
+
+      <PityHeroCard status={pityHeroStatus.status} bannerName={pityHeroStatus.bannerName} />
 
       <ActiveBannersSection
         banners={activeBanners}
